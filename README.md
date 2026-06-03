@@ -103,17 +103,15 @@ npm run build
 
 ## Деплой
 
-1. **Railway/Render:** deploy `server/`, получить URL API
-2. **Vercel:** root `client/`, `VITE_API_URL=<api-url>`, redeploy
-3. `CLIENT_URL` на сервере = URL Vercel
+Пошагово: **[docs/DEPLOY.md](docs/DEPLOY.md)** (Vercel = фронт, Render/Railway = API).
+
+Кратко:
+
+1. API: `npm run build -w server`, env из `server/.env.example`, `CLIENT_URL` = URL сайта на Vercel
+2. Vercel: Root Directory `client`, `VITE_API_URL` = публичный URL API
+3. Проверка: `/api/health`, форма, AI-кнопка
 
 ## Ссылки
 
 - GitHub: https://github.com/tusyama
 - Deploy: _(добавить после деплоя)_
-
-## Тесты
-
-```bash
-npm run test   # Input Guard unit tests (server)
-```

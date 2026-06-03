@@ -13,6 +13,11 @@ const envSchema = z.object({
   OPENROUTER_MODEL: z.string().default('openai/gpt-4o-mini'),
   CLIENT_URL: z.string().url(),
   SITE_URL: z.string().url().optional(),
+  /** Allow *.vercel.app origins (preview deployments). Production: set CLIENT_URL to the live site. */
+  ALLOW_VERCEL_PREVIEWS: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
 });
 
 export type Env = z.infer<typeof envSchema>;

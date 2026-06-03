@@ -19,7 +19,7 @@ ENV PORT=3001
 COPY package.json package-lock.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY server/package.json ./server/
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=builder /app/server/dist ./server/dist

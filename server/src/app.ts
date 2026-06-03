@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 import type { Env } from './config/env.js';
+import { resolveCorsOrigin } from './lib/corsOrigins.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { createAiRoutes } from './routes/ai.js';
 import { createContactRoutes } from './routes/contact.js';
@@ -15,7 +16,7 @@ export function createApp(env: Env) {
   app.use(
     '*',
     cors({
-      origin: [env.CLIENT_URL, 'http://localhost:5173'],
+      origin: (origin) => resolveCorsOrigin(origin, env),
       allowMethods: ['GET', 'POST', 'OPTIONS'],
       allowHeaders: ['Content-Type'],
     }),

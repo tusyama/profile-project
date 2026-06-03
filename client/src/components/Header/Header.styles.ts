@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from '@/ui-kit';
+import { Link, Stack } from '@/ui-kit';
 
 export const HeaderBar = styled.header`
   position: sticky;
@@ -15,10 +15,11 @@ export const HeaderBar = styled.header`
   }
 `;
 
-export const Inner = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+export const Inner = styled(Stack).attrs({
+  $direction: 'row',
+  $align: 'center',
+  $justify: 'space-between',
+})`
   padding: ${({ theme }) => theme.spacing.md} 0;
 `;
 
@@ -28,16 +29,21 @@ export const Logo = styled(Link)`
   text-decoration: none !important;
 `;
 
-export const Nav = styled.nav`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.lg};
-
+export const Nav = styled(Stack).attrs({
+  as: 'nav',
+  $direction: 'row',
+  $gap: 'lg',
+})`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `;
 
-export const MobileNav = styled.nav<{ $open: boolean }>`
+export const MobileNav = styled(Stack).attrs({
+  as: 'nav',
+  $direction: 'column',
+  $gap: 'lg',
+})<{ $open: boolean }>`
   display: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -48,8 +54,6 @@ export const MobileNav = styled.nav<{ $open: boolean }>`
     bottom: 0;
     left: 0;
     z-index: 99;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.spacing.lg};
     background-color: ${({ theme }) => theme.colors.bg};
     padding: ${({ theme }) => theme.spacing.xl};
     transform: translate3d(${({ $open }) => ($open ? '0, 0, 0' : '100%, 0, 0')});

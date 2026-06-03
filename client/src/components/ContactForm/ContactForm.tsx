@@ -106,7 +106,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className={`btn btn--full ${status === FORM_STATUS.Loading ? '' : ''}`}
+        className="btn btn--full"
         disabled={status === FORM_STATUS.Loading || status === FORM_STATUS.Success}
       >
         {status === FORM_STATUS.Loading ? (

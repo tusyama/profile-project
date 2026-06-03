@@ -1,3 +1,5 @@
+import styles from './WorkApproach.module.scss';
+
 export function WorkApproach() {
   return (
     <section className="section" id="work">
@@ -21,7 +23,7 @@ export function WorkApproach() {
             за модными словами
           </li>
         </ul>
-        <div className="alert alert--info" style={{ marginTop: '24px' }}>
+        <div className={`alert alert--info ${styles.alertWrap}`}>
           Кнопка «Улучшить комментарий» в форме — маленький пример на практике: помогаю текстом, но
           не отдаю наружу то, что должно остаться у нас.
         </div>

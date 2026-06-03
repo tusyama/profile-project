@@ -1,10 +1,14 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiErrorCode } from '@developer-landing/shared';
 import { ApiError } from '@/api/client';
 import { resolveContactSubmitError } from '@/lib/contactFormErrors';
 
 describe('resolveContactSubmitError', () => {
   const setError = vi.fn();
+
+  beforeEach(() => {
+    setError.mockClear();
+  });
 
   it('returns network message for non-ApiError', () => {
     expect(resolveContactSubmitError(new TypeError('fetch failed'), setError)).toBe(
@@ -17,7 +21,17 @@ describe('resolveContactSubmitError', () => {
       new ApiError(ApiErrorCode.RateLimitExceeded, 'rate'),
       setError,
     );
-    expect(msg).toContain('Слишком много попыток');
+    expect(msg).toBe('Слишком много попыток. Подождите минуту.');
+    expect(setError).not.toHaveBeenCalled();
+  });
+
+  it('returns preset message for content policy without touching fields', () => {
+    const msg = resolveContactSubmitError(
+      new ApiError(ApiErrorCode.ContentPolicyViolation, 'policy'),
+      setError,
+    );
+    expect(msg).toBe('Текст не прошёл проверку безопасности');
+    expect(setError).not.toHaveBeenCalled();
   });
 
   it('returns empty string when server details are mapped to fields', () => {
@@ -32,7 +46,6 @@ describe('resolveContactSubmitError', () => {
   });
 
   it('joins unmapped validation messages', () => {
-    setError.mockClear();
     const msg = resolveContactSubmitError(
       new ApiError(ApiErrorCode.ValidationFailed, 'bad', [
         { field: 'body', message: 'Invalid JSON' },

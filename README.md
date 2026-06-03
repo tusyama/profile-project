@@ -36,7 +36,7 @@ Docker (опционально): `docker compose up --build`
 | Frontend | React 19, TypeScript, Vite, **SCSS modules** |
 | Forms    | react-hook-form, zod                         |
 | Backend  | Hono, Node.js, TypeScript                    |
-| Email    | Nodemailer + Gmail SMTP                      |
+| Email    | Nodemailer + Gmail OAuth2 (or generic SMTP)  |
 | AI       | OpenRouter API                               |
 
 ## Как работает форма

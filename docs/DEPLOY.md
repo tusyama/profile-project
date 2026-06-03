@@ -39,15 +39,15 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 4. **Health check path:** `/api/health`
 5. Set environment variables (see [server/.env.example](../server/.env.example)):
 
-| Variable                                 | Example                                             |
-| ---------------------------------------- | --------------------------------------------------- |
-| `PORT`                                   | `3001` (or platform default)                        |
-| `OWNER_EMAIL`                            | your inbox                                          |
-| `SMTP_*`, `FROM_EMAIL`                   | Gmail App Password                                  |
-| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                          |
-| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)        |
-| `SITE_URL`                               | same as `CLIENT_URL` or custom domain               |
-| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API |
+| Variable                                 | Example                                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `PORT`                                   | `3001` (or platform default)                                                  |
+| `OWNER_EMAIL`                            | your inbox                                                                    |
+| `SMTP_USER`, `FROM_EMAIL`, `GOOGLE_*`    | Gmail OAuth2 (`@gmail.com`); or `SMTP_HOST` + `SMTP_PASS` for other providers |
+| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                                                    |
+| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)                                  |
+| `SITE_URL`                               | same as `CLIENT_URL` or custom domain                                         |
+| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API                           |
 
 6. Note the public URL, e.g. `https://developer-landing-api.onrender.com`.
 

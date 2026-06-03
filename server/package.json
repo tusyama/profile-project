@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "googleapis": "^148.0.0",
     "@hono/node-server": "^1.14.1",
     "hono": "^4.7.7",
     "nodemailer": "^6.10.0",

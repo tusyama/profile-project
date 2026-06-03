@@ -1,23 +1,8 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { assertSafeText, ApiErrorCode } from '@developer-landing/shared';
 import { Alert, Button, Text } from '../../ui-kit';
 import { ApiError, improveComment } from '../../api/client';
-
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.sm};
-`;
-
-const Preview = styled.div`
-  margin-top: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.md};
-`;
+import { ErrorWrap, Preview, Row } from './AiCommentHelper.styles';
 
 interface Props {
   draft: string;
@@ -70,9 +55,9 @@ export function AiCommentHelper({ draft, onAccept }: Props) {
       </Row>
 
       {error && (
-        <div style={{ marginTop: 8 }}>
+        <ErrorWrap>
           <Alert variant="error">{error}</Alert>
-        </div>
+        </ErrorWrap>
       )}
 
       {preview && (

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type UseFormSetError } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import styled from 'styled-components';
 import { ApiErrorCode } from '@developer-landing/shared';
+import { isContactFormField } from '../../constants/contactFields';
 import { FORM_STATUS, type FormStatus } from '../../types/form';
 import {
   Alert,
@@ -14,13 +14,21 @@ import {
 import { contactSchema, type ContactFormData } from '../../schemas/contact';
 import { ApiError, submitContact } from '../../api/client';
 import { AiCommentHelper } from '../AiCommentHelper/AiCommentHelper';
+import { Form } from './ContactForm.styles';
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-  max-width: 520px;
-`;
+function applyValidationDetails(
+  details: { field: string; message: string }[],
+  setError: UseFormSetError<ContactFormData>,
+): boolean {
+  let mapped = false;
+  for (const detail of details) {
+    if (isContactFormField(detail.field)) {
+      setError(detail.field, { type: 'server', message: detail.message });
+      mapped = true;
+    }
+  }
+  return mapped;
+}
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>(FORM_STATUS.Idle);
@@ -30,6 +38,7 @@ export function ContactForm() {
     register,
     handleSubmit,
     setValue,
+    setError,
     watch,
     reset,
     formState: { errors },
@@ -63,7 +72,10 @@ export function ContactForm() {
         } else if (e.code === ApiErrorCode.RateLimitExceeded) {
           setGlobalError('Слишком много попыток. Подождите минуту.');
         } else if (e.details?.length) {
-          setGlobalError(e.details.map((d) => d.message).join('. '));
+          const mapped = applyValidationDetails(e.details, setError);
+          if (!mapped) {
+            setGlobalError(e.details.map((d) => d.message).join('. '));
+          }
         } else {
           setGlobalError(e.message);
         }
@@ -74,7 +86,7 @@ export function ContactForm() {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <Form as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
       <FormField label="Имя" htmlFor="name" error={errors.name?.message}>
         <Input id="name" {...register('name')} error={!!errors.name} />
       </FormField>

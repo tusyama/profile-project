@@ -33,15 +33,18 @@ npm run dev
 Или Docker:
 
 ```bash
+cp .env.example .env   # заполнить реальными значениями (файл .env не коммитить)
 docker compose up --build
 ```
+
+В Docker клиент ходит на same-origin `/api`, а Vite проксирует на `http://server:3001` (`API_PROXY_TARGET` в `docker-compose.yml`). С хоста по-прежнему: http://localhost:5173 и http://localhost:3001.
 
 ## Переменные окружения
 
 См. [.env.example](.env.example).
 
 - **Server:** `SMTP_*`, `OWNER_EMAIL`, `OPENROUTER_API_KEY`, `CLIENT_URL`
-- **Client:** `VITE_API_URL` (в dev прокси `/api` → localhost:3001)
+- **Client:** `VITE_API_URL` — пусто в dev (прокси `/api`); в production — URL публичного API
 
 ## Тесты
 

@@ -1,15 +1,19 @@
 import type { ErrorHandler } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
-import { isAppError, toAppError } from '../errors/index.js';
+import { isAppError, toAppError, EmailDeliveryError } from '../errors/index.js';
 
 export function logAppError(error: ReturnType<typeof toAppError>): void {
-  const payload = {
+  const payload: Record<string, unknown> = {
     code: error.code,
     statusCode: error.statusCode,
     isOperational: error.isOperational,
     message: error.message,
     details: error.details,
   };
+
+  if (error instanceof EmailDeliveryError) {
+    payload.partial = error.partial;
+  }
 
   if (error.isOperational) {
     console.error('[operational-error]', payload);

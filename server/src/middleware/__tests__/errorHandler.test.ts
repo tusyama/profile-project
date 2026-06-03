@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { Hono } from 'hono';
 import { ApiErrorCode } from '@developer-landing/shared';
 import { AppError } from '../../errors/AppError.js';
-import { RateLimitError, ValidationFailedError } from '../../errors/operational.js';
+import {
+  EmailDeliveryError,
+  RateLimitError,
+  ValidationFailedError,
+} from '../../errors/operational.js';
 import { errorHandler } from '../errorHandler.js';
 
 describe('errorHandler', () => {
@@ -48,6 +52,23 @@ describe('errorHandler', () => {
     expect(res.status).toBe(500);
     expect(body.error).toBe(ApiErrorCode.Unknown);
     expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
+  it('logs partial flag for email delivery errors', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const app = new Hono();
+    app.onError(errorHandler);
+    app.get('/mail', () => {
+      throw new EmailDeliveryError(true);
+    });
+
+    await app.request('/mail');
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      '[operational-error]',
+      expect.objectContaining({ partial: true, code: ApiErrorCode.DeliveryFailed }),
+    );
     consoleSpy.mockRestore();
   });
 

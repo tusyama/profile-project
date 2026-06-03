@@ -3,6 +3,7 @@ import type { Env } from '../config/env.js';
 import { EmailDeliveryError } from '../errors/operational.js';
 import type { ContactInput } from '../schemas/contact.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
+import { formatTransportError } from '../utils/formatTransportError.js';
 
 export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
   const transporter = nodemailer.createTransport({
@@ -58,7 +59,16 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
       html: userHtml,
       text: `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
     });
-  } catch {
+  } catch (error) {
+    console.error('[contact-email]', {
+      stage: ownerSent ? 'user_confirmation' : 'owner_notification',
+      ownerSent,
+      smtp: { host: env.SMTP_HOST, port: env.SMTP_PORT, user: env.SMTP_USER },
+      from: env.FROM_EMAIL,
+      ownerTo: env.OWNER_EMAIL,
+      ...(ownerSent ? { userTo: data.email } : {}),
+      transportError: formatTransportError(error),
+    });
     throw new EmailDeliveryError(ownerSent);
   }
 }

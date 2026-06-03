@@ -8,6 +8,11 @@ export const HeaderBar = styled.header`
   background: rgba(10, 14, 20, 0.9);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    background: ${({ theme }) => theme.colors.bg};
+    backdrop-filter: none;
+  }
 `;
 
 export const Inner = styled.div`
@@ -23,18 +28,33 @@ export const Logo = styled(Link)`
   text-decoration: none !important;
 `;
 
-export const Nav = styled.nav<{ $open: boolean }>`
+export const Nav = styled.nav`
   display: flex;
   gap: ${({ theme }) => theme.spacing.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: none;
+  }
+`;
+
+export const MobileNav = styled.nav<{ $open: boolean }>`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: flex;
     position: fixed;
-    inset: 60px 0 0 0;
+    top: ${({ theme }) => theme.layout.headerHeight};
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
     flex-direction: column;
-    background: ${({ theme }) => theme.colors.bg};
+    gap: ${({ theme }) => theme.spacing.lg};
+    background-color: ${({ theme }) => theme.colors.bg};
     padding: ${({ theme }) => theme.spacing.xl};
-    transform: translateX(${({ $open }) => ($open ? '0' : '100%')});
+    transform: translate3d(${({ $open }) => ($open ? '0, 0, 0' : '100%, 0, 0')});
     transition: transform ${({ theme }) => theme.transitions.normal};
+    pointer-events: ${({ $open }) => ($open ? 'auto' : 'none')};
   }
 `;
 

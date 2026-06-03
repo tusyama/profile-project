@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Container, Link } from '@/ui-kit';
 import { NAV_ITEMS } from '@/constants/navigation';
-import { Burger, HeaderBar, Inner, Logo, Nav } from './Header.styles';
+import { Burger, HeaderBar, Inner, Logo, MobileNav, Nav } from './Header.styles';
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -36,15 +37,25 @@ export function Header() {
           >
             ☰
           </Burger>
-          <Nav $open={open}>
+          <Nav>
             {NAV_ITEMS.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+              <Link key={item.href} href={item.href}>
                 {item.label}
               </Link>
             ))}
           </Nav>
         </Inner>
       </Container>
+      {createPortal(
+        <MobileNav $open={open} aria-hidden={!open}>
+          {NAV_ITEMS.map((item) => (
+            <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+              {item.label}
+            </Link>
+          ))}
+        </MobileNav>,
+        document.body,
+      )}
     </HeaderBar>
   );
 }

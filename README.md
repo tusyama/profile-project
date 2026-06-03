@@ -4,15 +4,15 @@
 
 ## Стек
 
-| Слой | Технологии |
-|------|------------|
+| Слой     | Технологии                                                       |
+| -------- | ---------------------------------------------------------------- |
 | Frontend | React 19, TypeScript, Vite, styled-components, самописный UI-kit |
-| Forms | react-hook-form, zod |
-| Backend | Hono, Node.js, TypeScript |
-| Email | Nodemailer + Gmail SMTP (App Password) |
-| AI | OpenRouter API (OpenAI-compatible) |
-| Security | Input Guard (prompt injection), Output Guard |
-| DevOps | Docker Compose, GitHub Actions |
+| Forms    | react-hook-form, zod                                             |
+| Backend  | Hono, Node.js, TypeScript                                        |
+| Email    | Nodemailer + Gmail SMTP (App Password)                           |
+| AI       | OpenRouter API (OpenAI-compatible)                               |
+| Security | Input Guard (prompt injection), Output Guard                     |
+| DevOps   | Docker Compose, GitHub Actions                                   |
 
 CSS реализован через **styled-components** (CSS-in-JS) и design tokens — осознанный выбор вместо SCSS для component-driven styling и UI-kit.
 
@@ -22,9 +22,10 @@ CSS реализован через **styled-components** (CSS-in-JS) и design 
 # Установка
 npm install
 
-# Скопировать env
-cp .env.example .env
-# Заполнить SMTP_*, OPENROUTER_API_KEY, OWNER_EMAIL
+# Скопировать env (отдельно для бэкенда и фронтенда)
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+# Заполнить server/.env: SMTP_*, OPENROUTER_API_KEY, OWNER_EMAIL
 
 # Dev (client :5173 + server :3001)
 npm run dev
@@ -33,7 +34,8 @@ npm run dev
 Или Docker:
 
 ```bash
-cp .env.example .env   # заполнить реальными значениями (файл .env не коммитить)
+cp server/.env.example server/.env   # реальные значения, не коммитить
+cp client/.env.example client/.env
 docker compose up --build
 ```
 
@@ -41,10 +43,12 @@ docker compose up --build
 
 ## Переменные окружения
 
-См. [.env.example](.env.example).
+| Файл                                       | Назначение                                                    |
+| ------------------------------------------ | ------------------------------------------------------------- |
+| [server/.env.example](server/.env.example) | API, SMTP, OpenRouter, CORS (`CLIENT_URL`)                    |
+| [client/.env.example](client/.env.example) | `VITE_API_URL` — пусто в dev; в production URL публичного API |
 
-- **Server:** `SMTP_*`, `OWNER_EMAIL`, `OPENROUTER_API_KEY`, `CLIENT_URL`
-- **Client:** `VITE_API_URL` — пусто в dev (прокси `/api`); в production — URL публичного API
+Файлы `server/.env` и `client/.env` в `.gitignore`.
 
 ## Тесты
 

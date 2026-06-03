@@ -5,6 +5,8 @@ packages/shared/dist
 server/dist
 .env
 .env.local
+server/.env
+client/.env
 *.log
 .DS_Store
 client/dist

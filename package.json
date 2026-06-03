@@ -13,9 +13,15 @@
     "build": "npm run build -w @developer-landing/shared && npm run build -w server && npm run build -w client",
     "lint": "npm run lint -w client && npm run lint -w server",
     "typecheck": "npm run typecheck -w @developer-landing/shared && npm run typecheck -w client && npm run typecheck -w server",
-    "test": "npm run test -w @developer-landing/shared && npm run test -w client && npm run test -w server"
+    "test": "npm run test -w @developer-landing/shared && npm run test -w client && npm run test -w server",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3"
   }
 }

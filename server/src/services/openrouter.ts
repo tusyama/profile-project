@@ -1,7 +1,7 @@
 import type { Env } from '../config/env.js';
-import { AiOutputRejectedError, OpenRouterError } from '../errors/operational.js';
+import { AiOutputRejectedError, OpenRouterError } from '../errors.js';
+import { assertSafeOutput } from '../lib/safeOutput.js';
 import { AI_SYSTEM_PROMPT, buildUserPrompt } from '../security/aiPrompt.js';
-import { assertSafeOutput } from '@developer-landing/shared';
 
 export async function improveComment(env: Env, draft: string): Promise<string> {
   const siteUrl = env.SITE_URL ?? env.CLIENT_URL;
@@ -26,7 +26,7 @@ export async function improveComment(env: Env, draft: string): Promise<string> {
   });
 
   if (!response.ok) {
-    throw new OpenRouterError(`OpenRouter error: ${response.status}`, response.status);
+    throw new OpenRouterError(`OpenRouter error: ${response.status}`);
   }
 
   const data = (await response.json()) as {

@@ -1,23 +1,20 @@
 import { CASES } from '@/constants/cases';
-import { Card, Heading, SectionWrapper, Text } from '@/ui-kit';
-import { Grid } from './Cases.styles';
+import styles from './Cases.module.scss';
 
 export function Cases() {
   return (
-    <SectionWrapper id="cases">
-      <Heading as="h2" $size="h2">
-        Кейсы
-      </Heading>
-      <Grid>
-        {CASES.map((c) => (
-          <Card key={c.title}>
-            <Heading as="h3" $size="h3">
-              {c.title}
-            </Heading>
-            <Text $variant="muted">{c.desc}</Text>
-          </Card>
-        ))}
-      </Grid>
-    </SectionWrapper>
+    <section className="section" id="cases">
+      <div className="container">
+        <h2 className="h2">Кейсы</h2>
+        <div className={styles.grid}>
+          {CASES.map((c) => (
+            <article key={c.title} className="card">
+              <h3 className="h3">{c.title}</h3>
+              <p className="text-muted">{c.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

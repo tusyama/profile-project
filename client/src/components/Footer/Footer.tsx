@@ -1,22 +1,21 @@
-import styled from 'styled-components';
-import { Container, Text, Link } from '@/ui-kit';
-
-const FooterBar = styled.footer`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding: ${({ theme }) => theme.spacing.xl} 0;
-`;
+import styles from './Footer.module.scss';
 
 export function Footer() {
   return (
-    <FooterBar>
-      <Container>
-        <Text $variant="muted">
+    <footer className={styles.bar}>
+      <div className="container">
+        <p className="text-muted">
           © {new Date().getFullYear()} Артем Репин ·{' '}
-          <Link href="https://github.com/tusyama" target="_blank" rel="noopener noreferrer">
+          <a
+            className="link"
+            href="https://github.com/tusyama"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             GitHub
-          </Link>
-        </Text>
-      </Container>
-    </FooterBar>
+          </a>
+        </p>
+      </div>
+    </footer>
   );
 }

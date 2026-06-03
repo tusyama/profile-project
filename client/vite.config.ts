@@ -4,10 +4,16 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        loadPaths: [path.resolve(__dirname, 'src')],
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@developer-landing/shared': path.resolve(__dirname, '../packages/shared/src'),
     },
   },
   server: {

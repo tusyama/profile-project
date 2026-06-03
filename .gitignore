@@ -1,7 +1,6 @@
 node_modules
 dist
 *.tsbuildinfo
-packages/shared/dist
 server/dist
 .env
 .env.local

@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../config/env.js';
-import { RateLimitError } from '../errors/operational.js';
+import { RateLimitError } from '../errors.js';
 import { readJsonBody, parseBody } from '../lib/parseRequest.js';
 import { getClientIp, rateLimit } from '../middleware/rateLimit.js';
 import { aiDraftSchema } from '../schemas/ai.js';

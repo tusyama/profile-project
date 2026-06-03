@@ -1,0 +1,18 @@
+@use '../../styles/variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: $color-error;
+}

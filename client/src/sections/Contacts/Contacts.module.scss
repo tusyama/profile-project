@@ -1,0 +1,8 @@
+@use '../../styles/variables' as *;
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  margin-bottom: $space-lg;
+}

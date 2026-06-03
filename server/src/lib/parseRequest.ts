@@ -1,6 +1,6 @@
 import type { Context } from 'hono';
 import type { ZodSchema, ZodError } from 'zod';
-import { ValidationFailedError, ContentPolicyViolationError } from '../errors/operational.js';
+import { ValidationFailedError, ContentPolicyViolationError } from '../errors.js';
 
 export async function readJsonBody(c: Context): Promise<unknown> {
   try {

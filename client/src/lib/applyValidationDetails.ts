@@ -1,4 +1,4 @@
-import type { ValidationDetail } from '@developer-landing/shared';
+import type { ValidationDetail } from '@/types/api';
 import type { UseFormSetError, FieldValues, Path } from 'react-hook-form';
 import { isContactFormField, type ContactFormField } from '@/constants/contactFields';
 

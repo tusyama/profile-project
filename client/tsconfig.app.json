@@ -16,9 +16,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@developer-landing/shared": ["../packages/shared/src/index.ts"],
-      "@developer-landing/shared/*": ["../packages/shared/src/*"]
+      "@/*": ["./src/*"]
     },
 
     /* Linting */

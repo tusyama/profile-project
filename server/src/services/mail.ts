@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { Env } from '../config/env.js';
-import { EmailDeliveryError } from '../errors/operational.js';
+import { EmailDeliveryError } from '../errors.js';
 import type { ContactInput } from '../schemas/contact.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
 import { formatTransportError } from '../utils/formatTransportError.js';

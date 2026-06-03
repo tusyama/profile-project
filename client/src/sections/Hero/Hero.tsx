@@ -1,22 +1,23 @@
-import { Button, Heading, SectionWrapper, Text } from '@/ui-kit';
-import { CtaLink, HeroInner, Tagline } from './Hero.styles';
+import styles from './Hero.module.scss';
 
 export function Hero() {
   return (
-    <SectionWrapper>
-      <HeroInner>
-        <Tagline>Fullstack / Backend · Middle+ / Senior</Tagline>
-        <Heading as="h1" $size="h1">
-          Артем Репин
-        </Heading>
-        <Text $variant="muted">
-          Fullstack-разработчик с ~4 годами коммерческого опыта. EdTech, AI-интеграции в продакшне,
-          архитектура и продукт end-to-end.
-        </Text>
-        <CtaLink href="#contact">
-          <Button type="button">Связаться</Button>
-        </CtaLink>
-      </HeroInner>
-    </SectionWrapper>
+    <section className="section">
+      <div className="container">
+        <div className={styles.inner}>
+          <p className={styles.tagline}>Fullstack / Backend · Middle+ / Senior</p>
+          <h1 className="h1">Артем Репин</h1>
+          <p className="text-muted">
+            Fullstack-разработчик с ~4 годами коммерческого опыта. EdTech, AI-интеграции в
+            продакшне, архитектура и продукт end-to-end.
+          </p>
+          <a className={styles.cta} href="#contact">
+            <button type="button" className="btn">
+              Связаться
+            </button>
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -1,4 +1,4 @@
-import { ApiErrorCode } from '@developer-landing/shared';
+import { ApiErrorCode } from '@/types/api';
 import type { UseFormSetError } from 'react-hook-form';
 import { ApiError } from '@/api/client';
 import type { ContactFormData } from '@/schemas/contact';

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { assertSafeText, ApiErrorCode } from '@developer-landing/shared';
-import { Alert, Button, Text } from '@/ui-kit';
+import { assertSafeText } from '@/lib/safeText';
+import { ApiErrorCode } from '@/types/api';
 import { ApiError, improveComment } from '@/api/client';
-import { ErrorWrap, Preview, Row } from './AiCommentHelper.styles';
+import styles from './AiCommentHelper.module.scss';
 
 interface Props {
   draft: string;
@@ -42,43 +42,52 @@ export function AiCommentHelper({ draft, onAccept }: Props) {
 
   return (
     <div>
-      <Row>
-        <Button
+      <div className="stack-row">
+        <button
           type="button"
-          variant="secondary"
-          loading={loading}
-          disabled={!canImprove}
+          className="btn btn--secondary"
+          disabled={!canImprove || loading}
           onClick={handleImprove}
         >
-          Улучшить комментарий с AI
-        </Button>
-      </Row>
+          {loading ? (
+            <>
+              <span className="spinner" aria-hidden="true" />
+              AI…
+            </>
+          ) : (
+            'Улучшить комментарий с AI'
+          )}
+        </button>
+      </div>
 
       {error && (
-        <ErrorWrap>
-          <Alert variant="error">{error}</Alert>
-        </ErrorWrap>
+        <div className={styles.errorWrap}>
+          <div className="alert alert--error" role="alert">
+            {error}
+          </div>
+        </div>
       )}
 
       {preview && (
-        <Preview>
-          <Text $variant="small">Предпросмотр:</Text>
-          <Text $variant="body">{preview}</Text>
-          <Row>
-            <Button
+        <div className={styles.preview}>
+          <p className="text-small">Предпросмотр:</p>
+          <p className="text-body">{preview}</p>
+          <div className="stack-row">
+            <button
               type="button"
+              className="btn"
               onClick={() => {
                 onAccept(preview);
                 setPreview(null);
               }}
             >
               Принять
-            </Button>
-            <Button type="button" variant="ghost" onClick={() => setPreview(null)}>
+            </button>
+            <button type="button" className="btn btn--ghost" onClick={() => setPreview(null)}>
               Отклонить
-            </Button>
-          </Row>
-        </Preview>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

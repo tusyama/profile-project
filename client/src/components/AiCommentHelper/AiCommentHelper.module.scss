@@ -1,0 +1,13 @@
+@use '../../styles/variables' as *;
+
+.preview {
+  margin-top: $space-md;
+  padding: $space-md;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+}
+
+.errorWrap {
+  margin-top: $space-sm;
+}

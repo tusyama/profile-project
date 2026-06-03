@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { ApiErrorCode } from '@developer-landing/shared';
+import { ApiErrorCode } from '../../types/api.js';
 import { createApp } from '../../app.js';
 import type { Env } from '../../config/env.js';
 import * as mail from '../../services/mail.js';

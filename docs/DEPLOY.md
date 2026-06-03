@@ -1,6 +1,6 @@
 # Deployment guide
 
-This project is a **monorepo**: static React client + Node/Hono API (SMTP, OpenRouter). Vercel hosts the **frontend only**; the API needs a long-running Node host (Render, Railway, Fly.io, etc.).
+Static React client + Node/Hono API (SMTP, OpenRouter). Vercel hosts the **frontend only**; the API needs a long-running Node host (Render, Railway, Fly.io, etc.).
 
 ## Architecture
 
@@ -33,7 +33,7 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 
 1. Create a **Web Service** from this repo (root directory = repository root).
 2. **Build command:**  
-   `npm ci && npm run build -w @developer-landing/shared && npm run build -w server`
+   `npm ci && npm run build -w server`
 3. **Start command:**  
    `npm run start -w server`
 4. **Health check path:** `/api/health`
@@ -57,18 +57,17 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 
 1. Import the Git repository on [vercel.com](https://vercel.com).
 2. **Root Directory:** `client`
-3. **Include source files outside Root Directory:** enabled (default for newer projects) so `packages/shared` resolves.
-4. `client/vercel.json` already sets:
+3. `client/vercel.json` already sets:
    - `installCommand`: `cd .. && npm ci` (workspace install at repo root)
    - `buildCommand`: `npm run build`
    - SPA rewrite to `index.html`
-5. **Environment variables** (Production):
+4. **Environment variables** (Production):
 
 | Name           | Value                                                            |
 | -------------- | ---------------------------------------------------------------- |
 | `VITE_API_URL` | `https://developer-landing-api.onrender.com` (no trailing slash) |
 
-6. Deploy. Redeploy after changing `VITE_API_URL` (Vite inlines env at build time).
+5. Deploy. Redeploy after changing `VITE_API_URL` (Vite inlines env at build time).
 
 ### Custom domain
 

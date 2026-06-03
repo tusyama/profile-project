@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resolveContactSubmitError } from '@/lib/contactFormErrors';
 import { FORM_STATUS, type FormStatus } from '@/types/form';
-import { Alert, Button, FormField, Input, TextArea } from '@/ui-kit';
+import { FormField } from '@/components/FormField/FormField';
 import { contactSchema, type ContactFormData } from '@/schemas/contact';
 import { submitContact } from '@/api/client';
 import { AiCommentHelper } from '@/components/AiCommentHelper/AiCommentHelper';
-import { Form } from './ContactForm.styles';
+import styles from './ContactForm.module.scss';
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>(FORM_STATUS.Idle);
@@ -48,22 +48,39 @@ export function ContactForm() {
     }
   }
 
+  const inputClass = (hasError: boolean) => (hasError ? 'input input--error' : 'input');
+
   return (
-    <Form as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
       <FormField label="Имя" htmlFor="name" error={errors.name?.message}>
-        <Input id="name" {...register('name')} error={!!errors.name} />
+        <input id="name" className={inputClass(!!errors.name)} {...register('name')} />
       </FormField>
 
       <FormField label="Телефон" htmlFor="phone" error={errors.phone?.message}>
-        <Input id="phone" type="tel" {...register('phone')} error={!!errors.phone} />
+        <input
+          id="phone"
+          type="tel"
+          className={inputClass(!!errors.phone)}
+          {...register('phone')}
+        />
       </FormField>
 
       <FormField label="Email" htmlFor="email" error={errors.email?.message}>
-        <Input id="email" type="email" {...register('email')} error={!!errors.email} />
+        <input
+          id="email"
+          type="email"
+          className={inputClass(!!errors.email)}
+          {...register('email')}
+        />
       </FormField>
 
       <FormField label="Комментарий" htmlFor="comment" error={errors.comment?.message}>
-        <TextArea id="comment" rows={5} {...register('comment')} error={!!errors.comment} />
+        <textarea
+          id="comment"
+          rows={5}
+          className={errors.comment ? 'textarea input--error' : 'textarea'}
+          {...register('comment')}
+        />
       </FormField>
 
       <AiCommentHelper
@@ -72,23 +89,35 @@ export function ContactForm() {
       />
 
       <FormField honeypot>
-        <Input tabIndex={-1} autoComplete="off" aria-hidden="true" {...register('website')} />
+        <input tabIndex={-1} autoComplete="off" aria-hidden="true" {...register('website')} />
       </FormField>
 
       {status === FORM_STATUS.Success && (
-        <Alert variant="success">Сообщение отправлено! Проверьте почту — мы отправили копию.</Alert>
+        <div className="alert alert--success" role="alert">
+          Сообщение отправлено! Проверьте почту — мы отправили копию.
+        </div>
       )}
 
-      {status === FORM_STATUS.Error && globalError && <Alert variant="error">{globalError}</Alert>}
+      {status === FORM_STATUS.Error && globalError && (
+        <div className="alert alert--error" role="alert">
+          {globalError}
+        </div>
+      )}
 
-      <Button
+      <button
         type="submit"
-        loading={status === FORM_STATUS.Loading}
-        fullWidth
-        disabled={status === FORM_STATUS.Success}
+        className={`btn btn--full ${status === FORM_STATUS.Loading ? '' : ''}`}
+        disabled={status === FORM_STATUS.Loading || status === FORM_STATUS.Success}
       >
-        Отправить
-      </Button>
-    </Form>
+        {status === FORM_STATUS.Loading ? (
+          <>
+            <span className="spinner" aria-hidden="true" />
+            Отправка…
+          </>
+        ) : (
+          'Отправить'
+        )}
+      </button>
+    </form>
   );
 }

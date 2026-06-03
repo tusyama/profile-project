@@ -1,16 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { Hono } from 'hono';
-import { ApiErrorCode } from '@developer-landing/shared';
-import { AppError } from '../../errors/AppError.js';
-import {
-  EmailDeliveryError,
-  RateLimitError,
-  ValidationFailedError,
-} from '../../errors/operational.js';
+import { ApiErrorCode } from '../../types/api.js';
+import { EmailDeliveryError, RateLimitError, ValidationFailedError } from '../../errors.js';
 import { errorHandler } from '../errorHandler.js';
 
 describe('errorHandler', () => {
-  it('returns operational error payload with correct status', async () => {
+  it('returns rate limit error payload', async () => {
     const app = new Hono();
     app.onError(errorHandler);
     app.get('/rate', () => {
@@ -24,7 +19,7 @@ describe('errorHandler', () => {
     expect(body).toMatchObject({ error: ApiErrorCode.RateLimitExceeded });
   });
 
-  it('returns validation details for operational validation errors', async () => {
+  it('returns validation details', async () => {
     const app = new Hono();
     app.onError(errorHandler);
     app.get('/validate', () => {
@@ -38,7 +33,7 @@ describe('errorHandler', () => {
     expect(body.details).toEqual([{ field: 'email', message: 'bad' }]);
   });
 
-  it('marks programmer errors as non-operational and returns 500', async () => {
+  it('returns 500 for unexpected errors', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const app = new Hono();
     app.onError(errorHandler);
@@ -51,7 +46,6 @@ describe('errorHandler', () => {
 
     expect(res.status).toBe(500);
     expect(body.error).toBe(ApiErrorCode.Unknown);
-    expect(consoleSpy).toHaveBeenCalled();
     consoleSpy.mockRestore();
   });
 
@@ -66,19 +60,10 @@ describe('errorHandler', () => {
     await app.request('/mail');
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      '[operational-error]',
+      '[server-error]',
       expect.objectContaining({ partial: true, code: ApiErrorCode.DeliveryFailed }),
+      expect.any(String),
     );
     consoleSpy.mockRestore();
-  });
-
-  it('preserves AppError isOperational flag', () => {
-    const err = new AppError({
-      message: 'test',
-      statusCode: 418,
-      code: ApiErrorCode.Unknown,
-      isOperational: false,
-    });
-    expect(err.isOperational).toBe(false);
   });
 });

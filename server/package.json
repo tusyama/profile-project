@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npm run build -w @developer-landing/shared && tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "@developer-landing/shared": "1.0.0",
     "@hono/node-server": "^1.14.1",
     "hono": "^4.7.7",
     "nodemailer": "^6.10.0",

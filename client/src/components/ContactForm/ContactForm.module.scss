@@ -1,0 +1,8 @@
+@use '../../styles/variables' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  max-width: 520px;
+}

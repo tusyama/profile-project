@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Container, Link } from '@/ui-kit';
 import { NAV_ITEMS } from '@/constants/navigation';
-import { Burger, HeaderBar, Inner, Logo, MobileNav, Nav } from './Header.styles';
+import styles from './Header.module.scss';
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -25,37 +24,43 @@ export function Header() {
   }, [open]);
 
   return (
-    <HeaderBar>
-      <Container>
-        <Inner>
-          <Logo href="#">Артем Репин</Logo>
-          <Burger
+    <header className={styles.bar}>
+      <div className="container">
+        <div className={styles.inner}>
+          <a className={styles.logo} href="#">
+            Артем Репин
+          </a>
+          <button
             type="button"
+            className={styles.burger}
             aria-label="Меню"
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
           >
             ☰
-          </Burger>
-          <Nav>
+          </button>
+          <nav className={styles.nav}>
             {NAV_ITEMS.map((item) => (
-              <Link key={item.href} href={item.href}>
+              <a key={item.href} className="link" href={item.href}>
                 {item.label}
-              </Link>
+              </a>
             ))}
-          </Nav>
-        </Inner>
-      </Container>
+          </nav>
+        </div>
+      </div>
       {createPortal(
-        <MobileNav $open={open} aria-hidden={!open}>
+        <nav
+          className={`${styles.mobileNav} ${open ? styles.mobileNavOpen : ''}`}
+          aria-hidden={!open}
+        >
           {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
+            <a key={item.href} className="link" href={item.href} onClick={() => setOpen(false)}>
               {item.label}
-            </Link>
+            </a>
           ))}
-        </MobileNav>,
+        </nav>,
         document.body,
       )}
-    </HeaderBar>
+    </header>
   );
 }

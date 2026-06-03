@@ -1,0 +1,16 @@
+@use '../../styles/variables' as *;
+
+.inner {
+  padding-top: $space-xl;
+}
+
+.tagline {
+  font-size: 1.15rem;
+  color: $color-accent;
+  margin: 0 0 $space-lg;
+}
+
+.cta {
+  display: inline-block;
+  text-decoration: none;
+}

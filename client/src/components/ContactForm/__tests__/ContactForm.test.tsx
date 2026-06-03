@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ApiErrorCode } from '@developer-landing/shared';
+import { ApiErrorCode } from '@/types/api';
 import * as api from '@/api/client';
 import { ContactForm } from '@/components/ContactForm/ContactForm';
 import { renderWithTheme } from '@/test/render';

@@ -1,0 +1,7 @@
+# API service (Railway). Frontend deploys separately on Vercel — see docs/DEPLOY.md.
+[build]
+buildCommand = "npm run build:server"
+
+[deploy]
+startCommand = "npm run start -w server"
+healthcheckPath = "/api/health"

@@ -20,7 +20,16 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 | CORS                    | API `CLIENT_URL` must match the site users open         |
 | `VITE_API_URL`          | Public API origin, baked in at **build** time on Vercel |
 
-## 1. Deploy API (Render example)
+## 1. Deploy API (Railway or Render)
+
+### Railway
+
+1. Create a **Web Service** from this repo (root directory = repository root).
+2. `railway.toml` at the repo root sets build/start and health check — no extra dashboard config needed.
+3. Set environment variables (see table below).
+4. Note the public URL, e.g. `https://developer-landing-api.up.railway.app`.
+
+### Render (manual commands)
 
 1. Create a **Web Service** from this repo (root directory = repository root).
 2. **Build command:**  

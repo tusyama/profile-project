@@ -11,6 +11,8 @@
   "scripts": {
     "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
     "build": "npm run build -w @developer-landing/shared && npm run build -w server && npm run build -w client",
+    "build:server": "npm run build -w @developer-landing/shared && npm run build -w server",
+    "start": "npm run start -w server",
     "lint": "npm run lint -w client && npm run lint -w server",
     "typecheck": "npm run typecheck -w @developer-landing/shared && npm run typecheck -w client && npm run typecheck -w server",
     "test": "npm run test -w @developer-landing/shared && npm run test -w client && npm run test -w server",

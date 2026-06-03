@@ -1,17 +1,8 @@
 import nodemailer from 'nodemailer';
 import type { Env } from '../config/env.js';
+import { EmailDeliveryError } from '../errors/operational.js';
 import type { ContactInput } from '../schemas/contact.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
-
-export class EmailDeliveryError extends Error {
-  constructor(
-    message: string,
-    public readonly partial = false,
-  ) {
-    super(message);
-    this.name = 'EmailDeliveryError';
-  }
-}
 
 export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
   const transporter = nodemailer.createTransport({
@@ -67,13 +58,7 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
       html: userHtml,
       text: `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
     });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'unknown';
-    throw new EmailDeliveryError(
-      ownerSent
-        ? 'Owner notified but user copy failed'
-        : 'Failed to send notification emails',
-      ownerSent,
-    );
+  } catch {
+    throw new EmailDeliveryError(ownerSent);
   }
 }

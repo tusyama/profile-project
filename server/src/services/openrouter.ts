@@ -1,5 +1,5 @@
 import type { Env } from '../config/env.js';
-import { AiOutputRejectedError, OpenRouterError } from '../errors.js';
+import { AiOutputRejectedError, OpenRouterError } from '../errors/operational.js';
 import { AI_SYSTEM_PROMPT, buildUserPrompt } from '../security/aiPrompt.js';
 import { assertSafeOutput } from '@developer-landing/shared';
 

@@ -1,28 +1,28 @@
 import { serve } from '@hono/node-server';
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { secureHeaders } from 'hono/secure-headers';
+import { createApp } from './app.js';
 import { loadEnv } from './config/env.js';
-import { createAiRoutes } from './routes/ai.js';
-import { createContactRoutes } from './routes/contact.js';
+import { toAppError } from './errors/index.js';
+import { logAppError } from './middleware/errorHandler.js';
 
 const env = loadEnv();
-const app = new Hono();
+const app = createApp(env);
 
-app.use('*', secureHeaders());
-app.use(
-  '*',
-  cors({
-    origin: [env.CLIENT_URL, 'http://localhost:5173'],
-    allowMethods: ['GET', 'POST', 'OPTIONS'],
-    allowHeaders: ['Content-Type'],
-  }),
-);
+process.on('unhandledRejection', (reason) => {
+  const error = toAppError(reason);
+  logAppError(error);
+  if (!error.isOperational) {
+    console.error('[unhandledRejection] non-operational — investigate before restart');
+  }
+});
 
-app.get('/api/health', (c) => c.json({ status: 'ok' }));
-
-app.route('/api/contact', createContactRoutes(env));
-app.route('/api/ai', createAiRoutes(env));
+process.on('uncaughtException', (err) => {
+  const error = toAppError(err);
+  logAppError(error);
+  if (!error.isOperational) {
+    console.error('[uncaughtException] non-operational — shutting down');
+    process.exit(1);
+  }
+});
 
 serve({ fetch: app.fetch, port: env.PORT }, (info) => {
   console.log(`Server running on http://localhost:${info.port}`);

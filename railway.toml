@@ -1,7 +1,9 @@
 # API service (Railway). Frontend deploys separately on Vercel — see docs/DEPLOY.md.
 # Root Directory in Railway must stay at repo root (not server/) so workspaces + this file apply.
 [build]
-buildCommand = "npm ci && npm run build:server"
+# Railway runs npm install before this — do not run npm ci again (EBUSY on client/node_modules/.vite).
+buildCommand = "npm run build:server"
+watchPatterns = ["server/**", "package.json", "package-lock.json"]
 
 [deploy]
 # Run Node directly — npm as PID 1 intercepts SIGTERM and breaks Railway health checks.

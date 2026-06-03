@@ -5,7 +5,10 @@ import type { Env } from '../../config/env.js';
 const baseEnv = {
   PORT: 3001,
   OWNER_EMAIL: 'o@example.com',
-  RESEND_API_KEY: 're_test',
+  SMTP_HOST: 'smtp.example.com',
+  SMTP_PORT: 587,
+  SMTP_USER: 'u',
+  SMTP_PASS: 'p',
   FROM_EMAIL: 'f@example.com',
   OPENROUTER_API_KEY: 'key',
   OPENROUTER_MODEL: 'openai/gpt-4o-mini',

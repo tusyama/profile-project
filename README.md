@@ -9,7 +9,7 @@
 | Frontend | React 19, TypeScript, Vite, styled-components, самописный UI-kit |
 | Forms    | react-hook-form, zod                                             |
 | Backend  | Hono, Node.js, TypeScript                                        |
-| Email    | [Resend](https://resend.com) API                                 |
+| Email    | Nodemailer + Gmail SMTP (App Password)                           |
 | AI       | OpenRouter API (OpenAI-compatible)                               |
 | Security | Input Guard (prompt injection), Output Guard                     |
 | DevOps   | Docker Compose, GitHub Actions                                   |
@@ -25,7 +25,7 @@ npm install
 # Скопировать env (отдельно для бэкенда и фронтенда)
 cp server/.env.example server/.env
 cp client/.env.example client/.env
-# Заполнить server/.env: RESEND_API_KEY, FROM_EMAIL, OPENROUTER_API_KEY, OWNER_EMAIL
+# Заполнить server/.env: SMTP_*, OPENROUTER_API_KEY, OWNER_EMAIL
 
 # Dev (client :5173 + server :3001)
 npm run dev
@@ -45,7 +45,7 @@ docker compose up --build
 
 | Файл                                       | Назначение                                                    |
 | ------------------------------------------ | ------------------------------------------------------------- |
-| [server/.env.example](server/.env.example) | API, Resend, OpenRouter, CORS (`CLIENT_URL`)                  |
+| [server/.env.example](server/.env.example) | API, SMTP, OpenRouter, CORS (`CLIENT_URL`)                    |
 | [client/.env.example](client/.env.example) | `VITE_API_URL` — пусто в dev; в production URL публичного API |
 
 Файлы `server/.env` и `client/.env` в `.gitignore`.
@@ -64,7 +64,7 @@ npm run build
 
 По модели [operational vs programmer errors](https://sematext.com/blog/node-js-error-handling/):
 
-- **`AppError.isOperational: true`** — ожидаемые сбои (валидация, rate limit, email delivery, OpenRouter, policy)
+- **`AppError.isOperational: true`** — ожидаемые сбои (валидация, rate limit, SMTP, OpenRouter, policy)
 - **`isOperational: false`** — баги и неожиданные исключения → 500, расширенный лог, `uncaughtException` завершает процесс
 
 Централизованный `app.onError(errorHandler)` в Hono; роуты бросают типизированные ошибки из `server/src/errors/`.
@@ -76,7 +76,7 @@ npm run build
 ## Как работает форма
 
 1. Клиент: zod + safeText validation, honeypot `website`
-2. `POST /api/contact` → server validation → Resend
+2. `POST /api/contact` → server validation → Nodemailer
 3. Два письма (atomic): владельцу + копия пользователю
 4. Состояния UI: loading / success / error
 

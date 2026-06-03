@@ -1,42 +1,42 @@
-const MAX_DETAIL_LENGTH = 200;
+const MAX_RESPONSE_LENGTH = 200;
 
-type MailLikeError = Error & {
+type SmtpLikeError = Error & {
   code?: string;
   command?: string;
   response?: string;
   responseCode?: number;
-  statusCode?: number;
   errno?: number;
   syscall?: string;
   address?: string;
   port?: number;
 };
 
-/** Safe fields for server logs — no credentials or full provider transcripts. */
+/** Safe fields for server logs — no credentials or full SMTP transcripts. */
 export function formatTransportError(error: unknown): Record<string, unknown> {
   if (!(error instanceof Error)) {
     return { raw: String(error) };
   }
 
-  const mail = error as MailLikeError;
+  const smtp = error as SmtpLikeError;
   const out: Record<string, unknown> = {
-    name: mail.name,
-    message: mail.message,
+    name: smtp.name,
+    message: smtp.message,
   };
 
-  if (mail.statusCode !== undefined) out.statusCode = mail.statusCode;
-  if (mail.code !== undefined) out.code = mail.code;
-  if (mail.command !== undefined) out.command = mail.command;
-  if (mail.responseCode !== undefined) out.responseCode = mail.responseCode;
-  if (mail.errno !== undefined) out.errno = mail.errno;
-  if (mail.syscall !== undefined) out.syscall = mail.syscall;
-  if (mail.address !== undefined) out.address = mail.address;
-  if (mail.port !== undefined) out.port = mail.port;
+  if (smtp.code !== undefined) out.code = smtp.code;
+  if (smtp.command !== undefined) out.command = smtp.command;
+  if (smtp.responseCode !== undefined) out.responseCode = smtp.responseCode;
+  if (smtp.errno !== undefined) out.errno = smtp.errno;
+  if (smtp.syscall !== undefined) out.syscall = smtp.syscall;
+  if (smtp.address !== undefined) out.address = smtp.address;
+  if (smtp.port !== undefined) out.port = smtp.port;
 
-  if (mail.response !== undefined) {
-    const response = String(mail.response);
+  if (smtp.response !== undefined) {
+    const response = String(smtp.response);
     out.response =
-      response.length > MAX_DETAIL_LENGTH ? `${response.slice(0, MAX_DETAIL_LENGTH)}…` : response;
+      response.length > MAX_RESPONSE_LENGTH
+        ? `${response.slice(0, MAX_RESPONSE_LENGTH)}…`
+        : response;
   }
 
   return out;

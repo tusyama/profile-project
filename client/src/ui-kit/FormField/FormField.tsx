@@ -1,11 +1,11 @@
 import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 import styled from 'styled-components';
+import { Stack } from '../Stack/Stack';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
+const Wrapper = styled(Stack).attrs({
+  $direction: 'column',
+  $gap: 'sm',
+})``;
 
 const Label = styled.label`
   font-size: 0.9rem;

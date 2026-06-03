@@ -1,5 +1,13 @@
 export { ThemeProvider } from './theme/ThemeProvider';
 export { theme } from './theme/theme';
+export { Stack } from './Stack/Stack';
+export type {
+  StackAlign,
+  StackDirection,
+  StackJustify,
+  StackSpacing,
+  StackStyleProps,
+} from './Stack/Stack';
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
 export { TextArea } from './TextArea/TextArea';

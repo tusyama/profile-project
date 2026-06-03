@@ -1,13 +1,13 @@
 # Deployment guide
 
-This project is a **monorepo**: static React client + Node/Hono API (SMTP, OpenRouter). Vercel hosts the **frontend only**; the API needs a long-running Node host (Render, Railway, Fly.io, etc.).
+This project is a **monorepo**: static React client + Node/Hono API (Resend, OpenRouter). Vercel hosts the **frontend only**; the API needs a long-running Node host (Render, Railway, Fly.io, etc.).
 
 ## Architecture
 
 ```text
 Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.com
                 ↓ POST /api/contact, /api/ai/improve-comment
-         Render/Railway (server)   SMTP + OpenRouter
+         Render/Railway (server)   Resend + OpenRouter
 ```
 
 ## Pre-deploy checklist
@@ -39,15 +39,15 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 4. **Health check path:** `/api/health`
 5. Set environment variables (see [server/.env.example](../server/.env.example)):
 
-| Variable                                 | Example                                             |
-| ---------------------------------------- | --------------------------------------------------- |
-| `PORT`                                   | `3001` (or platform default)                        |
-| `OWNER_EMAIL`                            | your inbox                                          |
-| `SMTP_*`, `FROM_EMAIL`                   | Gmail App Password                                  |
-| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                          |
-| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)        |
-| `SITE_URL`                               | same as `CLIENT_URL` or custom domain               |
-| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API |
+| Variable                                 | Example                                                                                                                                                    |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`                                   | `3001` (or platform default)                                                                                                                               |
+| `OWNER_EMAIL`                            | your inbox                                                                                                                                                 |
+| `RESEND_API_KEY`, `FROM_EMAIL`           | Resend API key; `FROM_EMAIL` must use a [verified domain](https://resend.com/docs/dashboard/domains/introduction) (or `onboarding@resend.dev` for testing) |
+| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                                                                                                                                 |
+| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)                                                                                                               |
+| `SITE_URL`                               | same as `CLIENT_URL` or custom domain                                                                                                                      |
+| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API                                                                                                        |
 
 6. Note the public URL, e.g. `https://developer-landing-api.onrender.com`.
 
@@ -92,7 +92,7 @@ Open the Vercel URL → Contacts → submit form (test email) → **Улучши
 | Topic               | Detail                                                                                                                                     |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Rate limit          | In-memory `Map` in `server/src/middleware/rateLimit.ts` — per instance only; resets on cold start. Use Redis/KV if you need global limits. |
-| Vercel for API      | Not recommended: Nodemailer + stateful rate limit fit a persistent Node process better than serverless.                                    |
+| Vercel for API      | Not recommended: stateful in-memory rate limit fits a persistent Node process better than serverless.                                      |
 | Preview deployments | Set `ALLOW_VERCEL_PREVIEWS=true` on API and keep `VITE_API_URL` pointing at the same API, or previews will fail CORS.                      |
 
 ## CI

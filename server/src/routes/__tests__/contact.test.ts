@@ -11,10 +11,7 @@ vi.mock('../../services/mail.js', () => ({
 const env = {
   PORT: 3001,
   CLIENT_URL: 'http://localhost:5173',
-  SMTP_HOST: 'smtp.test',
-  SMTP_PORT: 587,
-  SMTP_USER: 'user',
-  SMTP_PASS: 'pass',
+  RESEND_API_KEY: 're_test_key',
   FROM_EMAIL: 'from@test.com',
   OWNER_EMAIL: 'owner@test.com',
   OPENROUTER_API_KEY: 'key',

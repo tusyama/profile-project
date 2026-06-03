@@ -1,20 +1,45 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import type { Env } from '../config/env.js';
 import { EmailDeliveryError } from '../errors/operational.js';
 import type { ContactInput } from '../schemas/contact.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
 import { formatTransportError } from '../utils/formatTransportError.js';
 
-export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
-  const transporter = nodemailer.createTransport({
-    host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
-    secure: false,
-    auth: {
-      user: env.SMTP_USER,
-      pass: env.SMTP_PASS,
-    },
+function throwOnResendError(error: {
+  message: string;
+  name: string;
+  statusCode: number | null;
+}): void {
+  const err = new Error(error.message) as Error & { statusCode?: number };
+  err.name = error.name;
+  if (error.statusCode != null) {
+    err.statusCode = error.statusCode;
+  }
+  throw err;
+}
+
+async function sendEmail(
+  resend: Resend,
+  env: Env,
+  to: string,
+  subject: string,
+  html: string,
+  text: string,
+): Promise<void> {
+  const { error } = await resend.emails.send({
+    from: env.FROM_EMAIL,
+    to: [to],
+    subject,
+    html,
+    text,
   });
+  if (error) {
+    throwOnResendError(error);
+  }
+}
+
+export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
+  const resend = new Resend(env.RESEND_API_KEY);
 
   const safe = {
     name: escapeHtml(data.name),
@@ -43,27 +68,29 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
   let ownerSent = false;
 
   try {
-    await transporter.sendMail({
-      from: env.FROM_EMAIL,
-      to: env.OWNER_EMAIL,
-      subject: 'Новая заявка с сайта',
-      html: ownerHtml,
-      text: `Имя: ${data.name}\nТелефон: ${data.phone}\nEmail: ${data.email}\n\n${data.comment}`,
-    });
+    await sendEmail(
+      resend,
+      env,
+      env.OWNER_EMAIL,
+      'Новая заявка с сайта',
+      ownerHtml,
+      `Имя: ${data.name}\nТелефон: ${data.phone}\nEmail: ${data.email}\n\n${data.comment}`,
+    );
     ownerSent = true;
 
-    await transporter.sendMail({
-      from: env.FROM_EMAIL,
-      to: data.email,
-      subject: 'Ваше сообщение получено',
-      html: userHtml,
-      text: `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
-    });
+    await sendEmail(
+      resend,
+      env,
+      data.email,
+      'Ваше сообщение получено',
+      userHtml,
+      `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
+    );
   } catch (error) {
     console.error('[contact-email]', {
       stage: ownerSent ? 'user_confirmation' : 'owner_notification',
       ownerSent,
-      smtp: { host: env.SMTP_HOST, port: env.SMTP_PORT, user: env.SMTP_USER },
+      provider: 'resend',
       from: env.FROM_EMAIL,
       ownerTo: env.OWNER_EMAIL,
       ...(ownerSent ? { userTo: data.email } : {}),

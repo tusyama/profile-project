@@ -1,27 +1,6 @@
-import styled from 'styled-components';
+import { CASES } from '../../constants/cases';
 import { Card, Heading, SectionWrapper, Text } from '../../ui-kit';
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-top: ${({ theme }) => theme.spacing.lg};
-`;
-
-const CASES = [
-  {
-    title: 'EdTech-платформа',
-    desc: 'Основной продукт: AI-генерация курсов в БД, MongoDB, WebSocket, CI/CD. Роль — lead fullstack.',
-  },
-  {
-    title: 'E-commerce проект',
-    desc: 'Умные теги, кастомизация UI на React, навигация и логика интерфейса.',
-  },
-  {
-    title: 'Taskboard',
-    desc: 'Учебный fullstack-проект: React, Node.js, MongoDB — для освоения стека.',
-  },
-];
+import { Grid } from './Cases.styles';
 
 export function Cases() {
   return (

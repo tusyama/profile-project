@@ -1,26 +1,6 @@
-import styled from 'styled-components';
+import { SKILLS } from '../../constants/skills';
 import { Badge, Heading, SectionWrapper, Text } from '../../ui-kit';
-
-const Stack = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.md};
-`;
-
-const SKILLS = [
-  'Node.js',
-  'TypeScript',
-  'React',
-  'Hono',
-  'MongoDB',
-  'Redis',
-  'PostgreSQL',
-  'Docker',
-  'AI / LLM',
-  'WebSocket',
-  'Solidity',
-];
+import { SkillList } from './About.styles';
 
 export function About() {
   return (
@@ -37,11 +17,11 @@ export function About() {
         Направления: backend и fullstack, интеграция AI в продакшн, реалтайм, Web3
         (смарт-контракты).
       </Text>
-      <Stack>
+      <SkillList>
         {SKILLS.map((s) => (
           <Badge key={s}>{s}</Badge>
         ))}
-      </Stack>
+      </SkillList>
     </SectionWrapper>
   );
 }

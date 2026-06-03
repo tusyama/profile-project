@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, type UseFormSetError } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ApiErrorCode } from '@developer-landing/shared';
+import { ApiErrorCode, type ValidationDetail } from '@developer-landing/shared';
 import { isContactFormField } from '../../constants/contactFields';
 import { FORM_STATUS, type FormStatus } from '../../types/form';
 import {
@@ -17,7 +17,7 @@ import { AiCommentHelper } from '../AiCommentHelper/AiCommentHelper';
 import { Form } from './ContactForm.styles';
 
 function applyValidationDetails(
-  details: { field: string; message: string }[],
+  details: ValidationDetail[],
   setError: UseFormSetError<ContactFormData>,
 ): boolean {
   let mapped = false;

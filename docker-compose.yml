@@ -1,0 +1,20 @@
+services:
+  server:
+    build: ./server
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - PORT=3001
+
+  client:
+    image: node:22-alpine
+    working_dir: /app/client
+    volumes:
+      - ./client:/app/client
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    environment:
+      - VITE_API_URL=http://localhost:3001

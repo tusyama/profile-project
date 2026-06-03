@@ -1,0 +1,13 @@
+{
+  "npm.autoDetect": "on",
+  "npm.exclude": "**/node_modules/**",
+  "npm.scriptExplorerExclude": [],
+  "npm.packageManager": "npm",
+  "files.exclude": {
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  }
+}

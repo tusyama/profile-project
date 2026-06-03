@@ -1,0 +1,79 @@
+import nodemailer from 'nodemailer';
+import type { Env } from '../config/env.js';
+import type { ContactInput } from '../schemas/contact.js';
+import { escapeHtml } from '../utils/escapeHtml.js';
+
+export class EmailDeliveryError extends Error {
+  constructor(
+    message: string,
+    public readonly partial = false,
+  ) {
+    super(message);
+    this.name = 'EmailDeliveryError';
+  }
+}
+
+export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
+  const transporter = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    secure: false,
+    auth: {
+      user: env.SMTP_USER,
+      pass: env.SMTP_PASS,
+    },
+  });
+
+  const safe = {
+    name: escapeHtml(data.name),
+    phone: escapeHtml(data.phone),
+    email: escapeHtml(data.email),
+    comment: escapeHtml(data.comment),
+  };
+
+  const ownerHtml = `
+    <h2>Новая заявка с сайта</h2>
+    <table cellpadding="8" style="border-collapse:collapse">
+      <tr><td><b>Имя</b></td><td>${safe.name}</td></tr>
+      <tr><td><b>Телефон</b></td><td>${safe.phone}</td></tr>
+      <tr><td><b>Email</b></td><td>${safe.email}</td></tr>
+      <tr><td><b>Комментарий</b></td><td><pre style="white-space:pre-wrap;font-family:sans-serif">${safe.comment}</pre></td></tr>
+    </table>
+  `;
+
+  const userHtml = `
+    <h2>Спасибо за обращение!</h2>
+    <p>Мы получили ваше сообщение и свяжемся с вами в ближайшее время.</p>
+    <p><b>Ваш комментарий:</b></p>
+    <pre style="white-space:pre-wrap;font-family:sans-serif">${safe.comment}</pre>
+  `;
+
+  let ownerSent = false;
+
+  try {
+    await transporter.sendMail({
+      from: env.FROM_EMAIL,
+      to: env.OWNER_EMAIL,
+      subject: 'Новая заявка с сайта',
+      html: ownerHtml,
+      text: `Имя: ${data.name}\nТелефон: ${data.phone}\nEmail: ${data.email}\n\n${data.comment}`,
+    });
+    ownerSent = true;
+
+    await transporter.sendMail({
+      from: env.FROM_EMAIL,
+      to: data.email,
+      subject: 'Ваше сообщение получено',
+      html: userHtml,
+      text: `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'unknown';
+    throw new EmailDeliveryError(
+      ownerSent
+        ? 'Owner notified but user copy failed'
+        : 'Failed to send notification emails',
+      ownerSent,
+    );
+  }
+}

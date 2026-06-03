@@ -1,0 +1,15 @@
+---
+description: Commit each logical change immediately as a separate git commit
+alwaysApply: true
+---
+
+# Git commits
+
+- After completing **one** fix, feature, or refactor, create **one** git commit right away — do not batch unrelated changes.
+- Do not wait until the end of a session to commit everything together.
+- One commit = one clear purpose (e.g. env split, Prettier setup, single bug fix).
+- Use a concise message: what changed and why (HEREDOC for the body).
+- Never commit `.env`, `server/.env`, `client/.env`, or other secrets.
+- Only commit when the user asks, unless they have asked to commit each change as you go (this rule).
+
+When multiple tasks are requested, plan separate commits upfront and land each before starting the next.

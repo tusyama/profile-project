@@ -24,10 +24,16 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 
 ### Railway
 
-1. Create a **Web Service** from this repo (root directory = repository root).
-2. `railway.toml` at the repo root sets build/start and health check — no extra dashboard config needed.
-3. Set environment variables (see table below).
+1. Create a **Web Service** from this repo (**Root Directory** = repository root, leave blank — not `server/`).
+2. `railway.toml` at the repo root sets build/start and health check. Remove conflicting overrides in **Settings → Deploy** (custom start command, health path) so the file is used.
+3. Set environment variables (see table below). **Do not set `PORT`** — Railway injects it; the app listens on `process.env.PORT`.
 4. Note the public URL, e.g. `https://developer-landing-api.up.railway.app`.
+
+**If deploy logs show `Server running` then `SIGTERM`:** health check failed or npm was PID 1. This repo uses `node server/dist/index.js` (see `railway.toml`) and `/api/health`. After redeploy, verify:
+
+```bash
+curl -s https://YOUR_RAILWAY_URL/api/health
+```
 
 ### Render (manual commands)
 
@@ -39,15 +45,15 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 4. **Health check path:** `/api/health`
 5. Set environment variables (see [server/.env.example](../server/.env.example)):
 
-| Variable                                 | Example                                             |
-| ---------------------------------------- | --------------------------------------------------- |
-| `PORT`                                   | `3001` (or platform default)                        |
-| `OWNER_EMAIL`                            | your inbox                                          |
-| `SMTP_USER`, `FROM_EMAIL`, `GOOGLE_*`    | Gmail OAuth2 (`@gmail.com` sender)                  |
-| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                          |
-| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)        |
-| `SITE_URL`                               | same as `CLIENT_URL` or custom domain               |
-| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API |
+| Variable                                 | Example                                                   |
+| ---------------------------------------- | --------------------------------------------------------- |
+| `PORT`                                   | omit on Railway/Render (platform sets it); `3001` locally |
+| `OWNER_EMAIL`                            | your inbox                                                |
+| `SMTP_USER`, `FROM_EMAIL`, `GOOGLE_*`    | Gmail OAuth2 (`@gmail.com` sender)                        |
+| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                                |
+| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)              |
+| `SITE_URL`                               | same as `CLIENT_URL` or custom domain                     |
+| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API       |
 
 6. Note the public URL, e.g. `https://developer-landing-api.onrender.com`.
 

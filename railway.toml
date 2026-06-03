@@ -1,7 +1,10 @@
 # API service (Railway). Frontend deploys separately on Vercel — see docs/DEPLOY.md.
+# Root Directory in Railway must stay at repo root (not server/) so workspaces + this file apply.
 [build]
-buildCommand = "npm run build:server"
+buildCommand = "npm ci && npm run build:server"
 
 [deploy]
-startCommand = "npm run start -w server"
+# Run Node directly — npm as PID 1 intercepts SIGTERM and breaks Railway health checks.
+startCommand = "node server/dist/index.js"
 healthcheckPath = "/api/health"
+healthcheckTimeout = 120

@@ -43,6 +43,29 @@ docker compose up --build
 - **Server:** `SMTP_*`, `OWNER_EMAIL`, `OPENROUTER_API_KEY`, `CLIENT_URL`
 - **Client:** `VITE_API_URL` (в dev прокси `/api` → localhost:3001)
 
+## Тесты
+
+```bash
+npm run test        # shared + client + server (Vitest)
+npm run typecheck
+npm run build
+```
+
+Покрытие: `safeText` / `contactSchema`, API client, `ContactForm` и `AiCommentHelper` (стейты и ошибки), `FormField` a11y, server `errorHandler` и `POST /api/contact`.
+
+## Обработка ошибок (server)
+
+По модели [operational vs programmer errors](https://sematext.com/blog/node-js-error-handling/):
+
+- **`AppError.isOperational: true`** — ожидаемые сбои (валидация, rate limit, SMTP, OpenRouter, policy)
+- **`isOperational: false`** — баги и неожиданные исключения → 500, расширенный лог, `uncaughtException` завершает процесс
+
+Централизованный `app.onError(errorHandler)` в Hono; роуты бросают типизированные ошибки из `server/src/errors/`.
+
+## Импорты (client)
+
+Алиас `@/` → `client/src/` (см. `tsconfig.app.json`, `vite.config.ts`). Пример: `@/ui-kit`, `@/api/client`.
+
 ## Как работает форма
 
 1. Клиент: zod + safeText validation, honeypot `website`

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { Stack } from '@/ui-kit';
 
-export const SkillList = styled(Stack).attrs({
+export const ContactLinks = styled(Stack).attrs({
   $direction: 'row',
-  $gap: 'sm',
+  $gap: 'lg',
   $wrap: true,
 })`
-  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
 `;

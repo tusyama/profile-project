@@ -1,13 +1,6 @@
-import styled from 'styled-components';
-import { Heading, Link, SectionWrapper, Text } from '../../ui-kit';
-import { ContactForm } from '../../components/ContactForm/ContactForm';
-
-const ContactLinks = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-`;
+import { Heading, Link, SectionWrapper, Text } from '@/ui-kit';
+import { ContactForm } from '@/components/ContactForm/ContactForm';
+import { ContactLinks } from './Contacts.styles';
 
 export function Contacts() {
   return (

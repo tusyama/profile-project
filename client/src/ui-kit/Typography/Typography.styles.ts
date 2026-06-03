@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import type { HeadingSize, TextVariant } from '../types/typography';
+import type { HeadingSize, TextVariant } from '@/ui-kit/types/typography';
 
 const headingSizes: Record<HeadingSize, string> = {
   h1: 'clamp(2rem, 5vw, 3rem)',

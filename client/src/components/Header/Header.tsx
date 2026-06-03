@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Container, Link } from '../../ui-kit';
-import { NAV_ITEMS } from '../../constants/navigation';
+import { Container, Link } from '@/ui-kit';
+import { NAV_ITEMS } from '@/constants/navigation';
 import { Burger, HeaderBar, Inner, Logo, Nav } from './Header.styles';
 
 export function Header() {

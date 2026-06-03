@@ -1,11 +1,15 @@
 import styled from 'styled-components';
-import { Alert, Heading, SectionWrapper } from '../../ui-kit';
+import { Alert, Heading, SectionWrapper, Stack } from '@/ui-kit';
 
 const List = styled.ul`
   margin: 0;
   padding-left: ${({ theme }) => theme.spacing.lg};
   color: ${({ theme }) => theme.colors.text};
   line-height: 1.8;
+`;
+
+const AlertWrap = styled(Stack).attrs({ $gap: 'md' })`
+  margin-top: ${({ theme }) => theme.spacing.lg};
 `;
 
 export function WorkApproach() {
@@ -23,12 +27,12 @@ export function WorkApproach() {
         </li>
         <li>Фокус на измеримых результатах: производительность, стабильность, DX команды</li>
       </List>
-      <div style={{ marginTop: 24 }}>
+      <AlertWrap>
         <Alert variant="info">
           Кнопка «Улучшить комментарий» в форме ниже — тот же подход: LLM API + валидация ввода
           и ответа, без утечки секретов.
         </Alert>
-      </div>
+      </AlertWrap>
     </SectionWrapper>
   );
 }

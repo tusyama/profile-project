@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { assertSafeText, ApiErrorCode } from '@developer-landing/shared';
-import { Alert, Button, Text } from '../../ui-kit';
-import { ApiError, improveComment } from '../../api/client';
+import { Alert, Button, Text } from '@/ui-kit';
+import { ApiError, improveComment } from '@/api/client';
 import { ErrorWrap, Preview, Row } from './AiCommentHelper.styles';
 
 interface Props {

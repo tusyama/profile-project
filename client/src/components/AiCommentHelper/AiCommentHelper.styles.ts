@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Stack } from '../../ui-kit';
+import { Stack } from '@/ui-kit';
 
 export const Row = styled(Stack).attrs({
   $direction: 'row',

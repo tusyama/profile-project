@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Stack } from '../Stack/Stack.styles';
+import { Stack } from '@/ui-kit/Stack/Stack.styles';
 
 export const Wrapper = styled(Stack).attrs({
   $direction: 'column',

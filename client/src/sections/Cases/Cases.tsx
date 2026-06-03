@@ -1,5 +1,5 @@
-import { CASES } from '../../constants/cases';
-import { Card, Heading, SectionWrapper, Text } from '../../ui-kit';
+import { CASES } from '@/constants/cases';
+import { Card, Heading, SectionWrapper, Text } from '@/ui-kit';
 import { Grid } from './Cases.styles';
 
 export function Cases() {

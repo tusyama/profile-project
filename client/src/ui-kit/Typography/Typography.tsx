@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { HeadingSize } from '../types/typography';
+import type { HeadingSize } from '@/ui-kit/types/typography';
 import { H1, H2, H3, H4 } from './Typography.styles';
 
 export { H1, H2, H3, H4, Text } from './Typography.styles';

@@ -1,4 +1,4 @@
-import type { AppTheme } from '../theme/theme';
+import type { AppTheme } from '@/ui-kit/theme/theme';
 
 export type StackDirection = 'row' | 'column';
 export type StackAlign = 'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline';

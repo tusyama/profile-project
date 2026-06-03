@@ -1,0 +1,11 @@
+---
+description: Client path alias @/ — use instead of relative ladders
+globs: client/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Client imports
+
+This project maps `@/*` → `client/src/*` (see `tsconfig.app.json` and `vite.config.ts`).
+
+Use `@/ui-kit`, `@/api/client`, `@/constants/...`, `@/components/...`, `@/sections/...` for cross-directory imports. Keep `./` only for siblings in the same folder.

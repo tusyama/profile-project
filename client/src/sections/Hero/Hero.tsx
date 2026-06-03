@@ -1,4 +1,4 @@
-import { Button, Heading, SectionWrapper, Text } from '../../ui-kit';
+import { Button, Heading, SectionWrapper, Text } from '@/ui-kit';
 import { CtaLink, HeroInner, Tagline } from './Hero.styles';
 
 export function Hero() {

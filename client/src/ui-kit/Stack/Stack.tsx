@@ -5,4 +5,4 @@ export type {
   StackJustify,
   StackSpacing,
   StackStyleProps,
-} from '../types/stack';
+} from '@/ui-kit/types/stack';

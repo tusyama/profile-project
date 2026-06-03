@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container, Text, Link } from '../../ui-kit';
+import { Container, Text, Link } from '@/ui-kit';
 
 const FooterBar = styled.footer`
   border-top: 1px solid ${({ theme }) => theme.colors.border};

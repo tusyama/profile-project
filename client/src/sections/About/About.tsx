@@ -1,5 +1,5 @@
-import { SKILLS } from '../../constants/skills';
-import { Badge, Heading, SectionWrapper, Text } from '../../ui-kit';
+import { SKILLS } from '@/constants/skills';
+import { Badge, Heading, SectionWrapper, Text } from '@/ui-kit';
 import { SkillList } from './About.styles';
 
 export function About() {

@@ -1,5 +1,5 @@
-import { Spinner } from '../Spinner/Spinner';
-import type { ButtonVariant } from '../types/button';
+import { Spinner } from '@/ui-kit/Spinner/Spinner';
+import type { ButtonVariant } from '@/ui-kit/types/button';
 import { StyledButton } from './Button.styles';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

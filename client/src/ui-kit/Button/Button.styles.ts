@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import type { ButtonVariant } from '../types/button';
+import type { ButtonVariant } from '@/ui-kit/types/button';
 
 export const StyledButton = styled.button<{
   $variant: ButtonVariant;

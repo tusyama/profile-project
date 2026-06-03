@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from '../../ui-kit';
+import { Link } from '@/ui-kit';
 
 export const HeaderBar = styled.header`
   position: sticky;

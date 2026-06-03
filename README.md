@@ -75,7 +75,22 @@ server/src/   — routes, schemas, mail, AI
 
 [docs/DEPLOY.md](docs/DEPLOY.md) — Vercel (client) + Render/Railway (server).
 
+## Ветка `extra`
+
+Расширенная версия репозитория (базовая отправка до упрощения под бриф). Переключение: `git checkout extra`.
+
+Отличия от `main`:
+
+- **styled-components** и самописный **UI-kit** (Stack, Button, Input, FormField и др.) вместо SCSS modules
+- **`packages/shared`** — общие zod-схемы, типы API, `safeText` / output guard для client и server
+- **Ошибки на сервере** — иерархия `AppError`, разделение operational / programmer errors, централизованный `errorHandler`
+- **AI-безопасность** — Input Guard (blocklist, unicode, эвристики), hardened prompt, Output Guard в ответе модели
+- **Тесты** — шире smoke: `AiCommentHelper`, `contactFormErrors`, `applyValidationDetails`, `FormField` a11y, shared `contactSchema` / `safeText`
+- **README** — подробнее про env, Docker-прокси, деплой и разграничение работы с AI vs ручные правки
+
+На `main` — урезанная «right-sized» вариация: SCSS, локальные схемы, плоский `server/src/errors.ts`, меньше файлов и тестов; функционал брифа (форма, письма, AI) сохранён.
+
 ## Ссылки
 
 - GitHub: https://github.com/tusyama
-- Deploy: _(добавить после деплоя)_
+- Deploy: https://profile-project-client.vercel.app/

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { StyledAlert, type AlertVariant } from './Alert.styles';
+import type { AlertVariant } from '../types/alert';
+import { StyledAlert } from './Alert.styles';
 
 export function Alert({
   variant,

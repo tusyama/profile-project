@@ -1,16 +1,12 @@
-import { ApiErrorCode } from '@developer-landing/shared';
+import { ApiErrorCode, type ValidationDetail } from '@developer-landing/shared';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
 export class ApiError extends Error {
   code: ApiErrorCode;
-  details?: { field: string; message: string }[];
+  details?: ValidationDetail[];
 
-  constructor(
-    code: ApiErrorCode,
-    message: string,
-    details?: { field: string; message: string }[],
-  ) {
+  constructor(code: ApiErrorCode, message: string, details?: ValidationDetail[]) {
     super(message);
     this.name = 'ApiError';
     this.code = code;
@@ -24,7 +20,7 @@ async function parseResponse<T>(res: Response): Promise<T> {
     const err = data as {
       error?: string;
       message?: string;
-      details?: { field: string; message: string }[];
+      details?: ValidationDetail[];
     };
     const code = (err.error ?? ApiErrorCode.Unknown) as ApiErrorCode;
     throw new ApiError(code, err.message ?? 'Произошла ошибка', err.details);

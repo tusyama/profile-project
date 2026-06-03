@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-
-export type AlertVariant = 'success' | 'error' | 'info';
+import type { AlertVariant } from '../types/alert';
 
 export const StyledAlert = styled.div<{ $variant: AlertVariant }>`
   padding: ${({ theme }) => theme.spacing.md};

@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
-
-export type HeadingSize = 'h1' | 'h2' | 'h3' | 'h4';
-export type TextVariant = 'body' | 'muted' | 'small';
+import type { HeadingSize, TextVariant } from '../types/typography';
 
 const headingSizes: Record<HeadingSize, string> = {
   h1: 'clamp(2rem, 5vw, 3rem)',

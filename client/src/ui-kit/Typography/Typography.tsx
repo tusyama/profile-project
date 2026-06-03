@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { H1, H2, H3, H4, type HeadingSize } from './Typography.styles';
+import type { HeadingSize } from '../types/typography';
+import { H1, H2, H3, H4 } from './Typography.styles';
 
 export { H1, H2, H3, H4, Text } from './Typography.styles';
-export type { HeadingSize, TextVariant } from './Typography.styles';
 
 export function Heading({
   as = 'h2',

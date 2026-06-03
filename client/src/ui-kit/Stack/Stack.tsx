@@ -5,4 +5,4 @@ export type {
   StackJustify,
   StackSpacing,
   StackStyleProps,
-} from './Stack.types';
+} from '../types/stack';

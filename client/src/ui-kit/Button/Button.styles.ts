@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+import type { ButtonVariant } from '../types/button';
 
 export const StyledButton = styled.button<{
   $variant: ButtonVariant;

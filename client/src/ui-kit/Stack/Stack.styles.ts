@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import type { StackStyleProps } from './Stack.types';
+import type { StackStyleProps } from '../types/stack';
 
 export const Stack = styled.div<StackStyleProps>`
   display: flex;

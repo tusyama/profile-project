@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import styled from 'styled-components';
 import { ApiErrorCode } from '@developer-landing/shared';
+import { FORM_STATUS, type FormStatus } from '../../types/form';
 import {
   Alert,
   Button,
@@ -21,10 +22,8 @@ const Form = styled.form`
   max-width: 520px;
 `;
 
-type FormStatus = 'idle' | 'loading' | 'success' | 'error';
-
 export function ContactForm() {
-  const [status, setStatus] = useState<FormStatus>('idle');
+  const [status, setStatus] = useState<FormStatus>(FORM_STATUS.Idle);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
   const {
@@ -42,7 +41,7 @@ export function ContactForm() {
   const comment = watch('comment') ?? '';
 
   async function onSubmit(data: ContactFormData) {
-    setStatus('loading');
+    setStatus(FORM_STATUS.Loading);
     setGlobalError(null);
     try {
       await submitContact({
@@ -52,10 +51,10 @@ export function ContactForm() {
         comment: data.comment,
         website: data.website,
       });
-      setStatus('success');
+      setStatus(FORM_STATUS.Success);
       reset({ name: '', phone: '', email: '', comment: '', website: '' } as ContactFormData);
     } catch (e) {
-      setStatus('error');
+      setStatus(FORM_STATUS.Error);
       if (e instanceof ApiError) {
         if (e.code === ApiErrorCode.ContentPolicyViolation) {
           setGlobalError('Текст не прошёл проверку безопасности');
@@ -98,13 +97,18 @@ export function ContactForm() {
         <Input tabIndex={-1} autoComplete="off" aria-hidden="true" {...register('website')} />
       </FormField>
 
-      {status === 'success' && (
+      {status === FORM_STATUS.Success && (
         <Alert variant="success">Сообщение отправлено! Проверьте почту — мы отправили копию.</Alert>
       )}
 
-      {status === 'error' && globalError && <Alert variant="error">{globalError}</Alert>}
+      {status === FORM_STATUS.Error && globalError && <Alert variant="error">{globalError}</Alert>}
 
-      <Button type="submit" loading={status === 'loading'} fullWidth disabled={status === 'success'}>
+      <Button
+        type="submit"
+        loading={status === FORM_STATUS.Loading}
+        fullWidth
+        disabled={status === FORM_STATUS.Success}
+      >
         Отправить
       </Button>
     </Form>

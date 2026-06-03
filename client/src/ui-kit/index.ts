@@ -1,19 +1,13 @@
 export { ThemeProvider } from './theme/ThemeProvider';
 export { theme } from './theme/theme';
 export { Stack } from './Stack/Stack';
-export type {
-  StackAlign,
-  StackDirection,
-  StackJustify,
-  StackSpacing,
-  StackStyleProps,
-} from './Stack/Stack';
+export * from './types';
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
 export { TextArea } from './TextArea/TextArea';
 export { FormField } from './FormField/FormField';
 export { Card } from './Card/Card';
-export { Heading, Text } from './Typography/Typography';
+export { Heading, Text, H1, H2, H3, H4 } from './Typography/Typography';
 export { Container, SectionWrapper } from './Container/Container';
 export { Alert } from './Alert/Alert';
 export { Spinner } from './Spinner/Spinner';

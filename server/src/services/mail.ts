@@ -3,7 +3,6 @@ import { EmailDeliveryError } from '../errors.js';
 import type { ContactInput } from '../schemas/contact.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
 import { formatTransportError } from '../utils/formatTransportError.js';
-import { isGmailSmtpUser } from '../lib/isGmailSmtpUser.js';
 import { createMailTransporter } from './createTransporter.js';
 
 export async function sendContactEmails(env: Env, data: ContactInput): Promise<void> {
@@ -56,9 +55,7 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
     console.error('[contact-email]', {
       stage: ownerSent ? 'user_confirmation' : 'owner_notification',
       ownerSent,
-      smtp: isGmailSmtpUser(env.SMTP_USER)
-        ? { transport: 'gmail-oauth2', user: env.SMTP_USER }
-        : { host: env.SMTP_HOST, port: env.SMTP_PORT, user: env.SMTP_USER },
+      smtp: { transport: 'gmail-oauth2', user: env.SMTP_USER },
       from: env.FROM_EMAIL,
       ownerTo: env.OWNER_EMAIL,
       ...(ownerSent ? { userTo: data.email } : {}),

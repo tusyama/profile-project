@@ -20,7 +20,7 @@
 ```bash
 npm install
 cp server/.env.example server/.env && cp client/.env.example client/.env
-# SMTP_*, OPENROUTER_API_KEY, OWNER_EMAIL в server/.env
+# SMTP_USER, GOOGLE_*, OPENROUTER_API_KEY, OWNER_EMAIL в server/.env
 npm run dev
 ```
 
@@ -36,7 +36,7 @@ Docker (опционально): `docker compose up --build`
 | Frontend | React 19, TypeScript, Vite, **SCSS modules** |
 | Forms    | react-hook-form, zod                         |
 | Backend  | Hono, Node.js, TypeScript                    |
-| Email    | Nodemailer + Gmail OAuth2 (or generic SMTP)  |
+| Email    | Nodemailer + Gmail OAuth2                    |
 | AI       | OpenRouter API                               |
 
 ## Как работает форма

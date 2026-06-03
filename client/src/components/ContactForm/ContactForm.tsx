@@ -1,34 +1,19 @@
 import { useState } from 'react';
-import { useForm, type UseFormSetError } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ApiErrorCode, type ValidationDetail } from '@developer-landing/shared';
-import { isContactFormField } from '../../constants/contactFields';
-import { FORM_STATUS, type FormStatus } from '../../types/form';
+import { resolveContactSubmitError } from '@/lib/contactFormErrors';
+import { FORM_STATUS, type FormStatus } from '@/types/form';
 import {
   Alert,
   Button,
   FormField,
   Input,
   TextArea,
-} from '../../ui-kit';
-import { contactSchema, type ContactFormData } from '../../schemas/contact';
-import { ApiError, submitContact } from '../../api/client';
-import { AiCommentHelper } from '../AiCommentHelper/AiCommentHelper';
+} from '@/ui-kit';
+import { contactSchema, type ContactFormData } from '@/schemas/contact';
+import { submitContact } from '@/api/client';
+import { AiCommentHelper } from '@/components/AiCommentHelper/AiCommentHelper';
 import { Form } from './ContactForm.styles';
-
-function applyValidationDetails(
-  details: ValidationDetail[],
-  setError: UseFormSetError<ContactFormData>,
-): boolean {
-  let mapped = false;
-  for (const detail of details) {
-    if (isContactFormField(detail.field)) {
-      setError(detail.field, { type: 'server', message: detail.message });
-      mapped = true;
-    }
-  }
-  return mapped;
-}
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>(FORM_STATUS.Idle);
@@ -64,24 +49,8 @@ export function ContactForm() {
       reset({ name: '', phone: '', email: '', comment: '', website: '' } as ContactFormData);
     } catch (e) {
       setStatus(FORM_STATUS.Error);
-      if (e instanceof ApiError) {
-        if (e.code === ApiErrorCode.ContentPolicyViolation) {
-          setGlobalError('Текст не прошёл проверку безопасности');
-        } else if (e.code === ApiErrorCode.DeliveryFailed) {
-          setGlobalError('Не удалось отправить сообщение. Попробуйте позже.');
-        } else if (e.code === ApiErrorCode.RateLimitExceeded) {
-          setGlobalError('Слишком много попыток. Подождите минуту.');
-        } else if (e.details?.length) {
-          const mapped = applyValidationDetails(e.details, setError);
-          if (!mapped) {
-            setGlobalError(e.details.map((d) => d.message).join('. '));
-          }
-        } else {
-          setGlobalError(e.message);
-        }
-      } else {
-        setGlobalError('Ошибка сети. Проверьте подключение.');
-      }
+      const message = resolveContactSubmitError(e, setError);
+      if (message) setGlobalError(message);
     }
   }
 

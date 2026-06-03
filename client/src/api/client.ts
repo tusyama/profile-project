@@ -14,7 +14,7 @@ export class ApiError extends Error {
   }
 }
 
-async function parseResponse<T>(res: Response): Promise<T> {
+export async function parseApiResponse<T>(res: Response): Promise<T> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const err = data as {
@@ -40,7 +40,7 @@ export async function submitContact(payload: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  return parseResponse<{ success: boolean }>(res);
+  return parseApiResponse<{ success: boolean }>(res);
 }
 
 export async function improveComment(draft: string) {
@@ -49,5 +49,5 @@ export async function improveComment(draft: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ draft }),
   });
-  return parseResponse<{ improved: string }>(res);
+  return parseApiResponse<{ improved: string }>(res);
 }

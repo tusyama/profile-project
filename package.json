@@ -13,7 +13,7 @@
     "build": "npm run build -w @developer-landing/shared && npm run build -w server && npm run build -w client",
     "lint": "npm run lint -w client && npm run lint -w server",
     "typecheck": "npm run typecheck -w @developer-landing/shared && npm run typecheck -w client && npm run typecheck -w server",
-    "test": "npm run test -w @developer-landing/shared"
+    "test": "npm run test -w @developer-landing/shared && npm run test -w client"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

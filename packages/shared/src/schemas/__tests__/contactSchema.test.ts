@@ -31,8 +31,26 @@ describe('contactSchema', () => {
     expect(fieldErrors(result).phone).toContain('Некорректный телефон');
   });
 
+  it('rejects phone with trailing plus', () => {
+    const result = contactSchema.safeParse({ ...valid, phone: '9147786301+' });
+    expect(result.success).toBe(false);
+    expect(fieldErrors(result).phone).toContain('Некорректный телефон');
+  });
+
+  it('rejects name with digits only', () => {
+    const result = contactSchema.safeParse({ ...valid, name: '9147786301' });
+    expect(result.success).toBe(false);
+    expect(fieldErrors(result).name?.length).toBeGreaterThan(0);
+  });
+
   it('rejects invalid email', () => {
     const result = contactSchema.safeParse({ ...valid, email: 'not-an-email' });
+    expect(result.success).toBe(false);
+    expect(fieldErrors(result).email).toContain('Некорректный email');
+  });
+
+  it('rejects malformed email with empty domain label', () => {
+    const result = contactSchema.safeParse({ ...valid, email: 'test@.com' });
     expect(result.success).toBe(false);
     expect(fieldErrors(result).email).toContain('Некорректный email');
   });

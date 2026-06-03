@@ -23,11 +23,7 @@ export function rateLimit(
   return { allowed: true };
 }
 
-const IP_HEADERS = [
-  'cf-connecting-ip',
-  'x-real-ip',
-  'x-forwarded-for',
-] as const;
+const IP_HEADERS = ['cf-connecting-ip', 'x-real-ip', 'x-forwarded-for'] as const;
 
 export function getClientIp(req: Request): string {
   for (const header of IP_HEADERS) {

@@ -65,7 +65,13 @@ export function AiCommentHelper({ draft, onAccept }: Props) {
           <Text $variant="small">Предпросмотр:</Text>
           <Text $variant="body">{preview}</Text>
           <Row>
-            <Button type="button" onClick={() => { onAccept(preview); setPreview(null); }}>
+            <Button
+              type="button"
+              onClick={() => {
+                onAccept(preview);
+                setPreview(null);
+              }}
+            >
               Принять
             </Button>
             <Button type="button" variant="ghost" onClick={() => setPreview(null)}>

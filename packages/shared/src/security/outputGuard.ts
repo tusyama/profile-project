@@ -1,13 +1,8 @@
 import { INJECTION_PATTERNS, OUTPUT_SECRET_PATTERNS } from './patterns.js';
 
-export type OutputGuardResult =
-  | { ok: true; text: string }
-  | { ok: false; reason: string };
+export type OutputGuardResult = { ok: true; text: string } | { ok: false; reason: string };
 
-export function assertSafeOutput(
-  output: string,
-  draftLength: number,
-): OutputGuardResult {
+export function assertSafeOutput(output: string, draftLength: number): OutputGuardResult {
   const trimmed = output.trim();
 
   if (!trimmed || trimmed === '[REJECTED]') {

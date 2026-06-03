@@ -38,11 +38,7 @@ export function Header() {
           </Burger>
           <Nav $open={open}>
             {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-              >
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
                 {item.label}
               </Link>
             ))}

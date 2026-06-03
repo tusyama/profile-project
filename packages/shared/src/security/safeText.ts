@@ -2,9 +2,7 @@ import { INJECTION_PATTERNS } from './patterns.js';
 
 export type SafeTextMode = 'strict' | 'light' | 'formatOnly';
 
-export type SafeTextResult =
-  | { ok: true; normalized: string }
-  | { ok: false; reason: string };
+export type SafeTextResult = { ok: true; normalized: string } | { ok: false; reason: string };
 
 const ZERO_WIDTH = /[\u200B-\u200D\uFEFF\u202A-\u202E]/g;
 const URL_REGEX = /https?:\/\/[^\s]+/gi;

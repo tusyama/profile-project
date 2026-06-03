@@ -10,8 +10,7 @@ export function Contacts() {
       </Heading>
       <ContactLinks>
         <Text $variant="body">
-          Email:{' '}
-          <Link href="mailto:lisesx@gmail.com">lisesx@gmail.com</Link>
+          Email: <Link href="mailto:lisesx@gmail.com">lisesx@gmail.com</Link>
         </Text>
         <Text $variant="body">
           GitHub:{' '}

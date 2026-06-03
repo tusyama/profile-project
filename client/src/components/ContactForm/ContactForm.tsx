@@ -3,13 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resolveContactSubmitError } from '@/lib/contactFormErrors';
 import { FORM_STATUS, type FormStatus } from '@/types/form';
-import {
-  Alert,
-  Button,
-  FormField,
-  Input,
-  TextArea,
-} from '@/ui-kit';
+import { Alert, Button, FormField, Input, TextArea } from '@/ui-kit';
 import { contactSchema, type ContactFormData } from '@/schemas/contact';
 import { submitContact } from '@/api/client';
 import { AiCommentHelper } from '@/components/AiCommentHelper/AiCommentHelper';
@@ -72,7 +66,10 @@ export function ContactForm() {
         <TextArea id="comment" rows={5} {...register('comment')} error={!!errors.comment} />
       </FormField>
 
-      <AiCommentHelper draft={comment} onAccept={(text) => setValue('comment', text, { shouldValidate: true })} />
+      <AiCommentHelper
+        draft={comment}
+        onAccept={(text) => setValue('comment', text, { shouldValidate: true })}
+      />
 
       <FormField honeypot>
         <Input tabIndex={-1} autoComplete="off" aria-hidden="true" {...register('website')} />

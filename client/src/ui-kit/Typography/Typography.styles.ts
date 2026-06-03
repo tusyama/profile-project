@@ -18,22 +18,30 @@ const headingStyles = css<{ $size: HeadingSize }>`
 
 export const H1 = styled.h1<{ $size?: HeadingSize }>`
   ${headingStyles}
-  ${({ $size = 'h1' }) => css`font-size: ${headingSizes[$size]};`}
+  ${({ $size = 'h1' }) => css`
+    font-size: ${headingSizes[$size]};
+  `}
 `;
 
 export const H2 = styled.h2<{ $size?: HeadingSize }>`
   ${headingStyles}
-  ${({ $size = 'h2' }) => css`font-size: ${headingSizes[$size]};`}
+  ${({ $size = 'h2' }) => css`
+    font-size: ${headingSizes[$size]};
+  `}
 `;
 
 export const H3 = styled.h3<{ $size?: HeadingSize }>`
   ${headingStyles}
-  ${({ $size = 'h3' }) => css`font-size: ${headingSizes[$size]};`}
+  ${({ $size = 'h3' }) => css`
+    font-size: ${headingSizes[$size]};
+  `}
 `;
 
 export const H4 = styled.h4<{ $size?: HeadingSize }>`
   ${headingStyles}
-  ${({ $size = 'h4' }) => css`font-size: ${headingSizes[$size]};`}
+  ${({ $size = 'h4' }) => css`
+    font-size: ${headingSizes[$size]};
+  `}
 `;
 
 export const Text = styled.p<{ $variant: TextVariant }>`

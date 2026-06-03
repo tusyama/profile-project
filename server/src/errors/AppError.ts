@@ -1,4 +1,8 @@
-import { ApiErrorCode, type ApiErrorCode as ApiErrorCodeType, type ValidationDetail } from '@developer-landing/shared';
+import {
+  ApiErrorCode,
+  type ApiErrorCode as ApiErrorCodeType,
+  type ValidationDetail,
+} from '@developer-landing/shared';
 
 export type AppErrorOptions = {
   message: string;

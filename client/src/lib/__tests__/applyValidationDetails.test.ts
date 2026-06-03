@@ -14,7 +14,10 @@ describe('applyValidationDetails', () => {
 
     expect(mapped).toBe(true);
     expect(setError).toHaveBeenCalledTimes(2);
-    expect(setError).toHaveBeenCalledWith('email', { type: 'server', message: 'Некорректный email' });
+    expect(setError).toHaveBeenCalledWith('email', {
+      type: 'server',
+      message: 'Некорректный email',
+    });
   });
 
   it('returns false when no fields match the contact form', () => {

@@ -12,6 +12,15 @@ process.on('unhandledRejection', (reason) => {
 });
 
 process.on('uncaughtException', (err) => {
+  const code = (err as NodeJS.ErrnoException)?.code;
+  if (code === 'EADDRINUSE') {
+    console.error(
+      `[fatal] Port ${env.PORT} is already in use. Stop the other process or change PORT in server/.env`,
+    );
+    process.exit(1);
+    return;
+  }
+
   const error = toAppError(err);
   logAppError(error);
   if (error.statusCode >= 500) {

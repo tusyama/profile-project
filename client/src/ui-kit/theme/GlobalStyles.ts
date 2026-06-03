@@ -7,6 +7,7 @@ export const GlobalStyles = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: ${({ theme }) => theme.layout.headerHeight};
   }
 
   body {

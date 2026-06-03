@@ -39,6 +39,8 @@ export const theme = {
   },
   layout: {
     maxWidth: '1100px',
+    /** Sticky header: md padding ×2 + logo line + border */
+    headerHeight: '4rem',
   },
 } as const;
 

@@ -3,6 +3,7 @@ import { createApp } from './app.js';
 import { loadEnv } from './config/env.js';
 import { toAppError } from './errors.js';
 import { logAppError } from './middleware/errorHandler.js';
+import { getMailTransportDiagnostics } from './services/sendMailMessage.js';
 
 const env = loadEnv();
 const app = createApp(env);
@@ -31,4 +32,5 @@ process.on('uncaughtException', (err) => {
 
 serve({ fetch: app.fetch, port: env.PORT, hostname: '0.0.0.0' }, (info) => {
   console.log(`Server running on http://0.0.0.0:${info.port}`);
+  console.log('[mail-config]', getMailTransportDiagnostics());
 });

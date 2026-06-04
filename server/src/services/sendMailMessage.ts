@@ -4,13 +4,31 @@ import { createMailTransporter } from './createTransporter.js';
 
 export type MailTransport = 'smtp' | 'gmail-api';
 
+function isRailwayRuntime(): boolean {
+  return Boolean(
+    process.env.RAILWAY_ENVIRONMENT ||
+    process.env.RAILWAY_PROJECT_ID ||
+    process.env.RAILWAY_ENVIRONMENT_NAME,
+  );
+}
+
 export function resolveMailTransport(): MailTransport {
   const configured = process.env.MAIL_TRANSPORT?.trim().toLowerCase();
   if (configured === 'smtp' || configured === 'gmail-api') {
     return configured;
   }
   // Railway blocks outbound SMTP on Hobby/Trial/Free — use Gmail HTTPS API instead.
-  return process.env.RAILWAY_ENVIRONMENT ? 'gmail-api' : 'smtp';
+  return isRailwayRuntime() ? 'gmail-api' : 'smtp';
+}
+
+export function getMailTransportDiagnostics(): Record<string, unknown> {
+  return {
+    resolved: resolveMailTransport(),
+    mailTransportEnv: process.env.MAIL_TRANSPORT ?? null,
+    railwayEnvironment: process.env.RAILWAY_ENVIRONMENT ?? null,
+    railwayProjectId: process.env.RAILWAY_PROJECT_ID ? '(set)' : null,
+    isRailway: isRailwayRuntime(),
+  };
 }
 
 type SendOptions = {

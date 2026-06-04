@@ -28,16 +28,26 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 2. `railway.toml` at the repo root sets build/start and health check. Remove conflicting overrides in **Settings → Deploy** (custom start command, health path) so the file is used.
 3. Set environment variables (see table below). **Do not set `PORT`** — Railway injects it; the app listens on `process.env.PORT`.
 4. Note the public URL, e.g. `https://developer-landing-api.up.railway.app`.
+5. **Networking → Public domain → Target Port** = **8080** (match `[startup]` port in logs). Wrong target port causes `502` + `x-railway-fallback: true` even when deploy succeeds.
 
-**If deploy logs show `Server running` then `Stopping Container`:** the new deployment failed its health check and Railway rolled back to the previous version. Check:
+**502 / `Application failed to respond`:** set Target Port to **8080**, then verify:
+
+```bash
+curl -s https://YOUR_RAILWAY_URL/api/health
+# {"status":"ok"}
+```
+
+**If deploy logs show `Server running` then `Stopping Container`:** may be the old container stopping during swap. If the public URL returns 502, check Target Port first.
+
+**Deploy troubleshooting:**
 
 1. **Root Directory** = repository root (blank), **not** `server/`
-2. **Start command** = `node server/dist/index.js` (from `railway.toml`) — remove `npm run start` override in Settings → Deploy
-3. **Health check path** = `/api/health` (or `/health`) — remove wrong paths like `/` or `/healthz`
-4. **Do not set `PORT`** in Railway Variables — Railway injects it (usually `8080`)
-5. After deploy, logs should show `[startup]`, `[startup-health] { status: 200, ok: true }`, `[mail-config]`. If you see `[shutdown] received SIGTERM` right after startup, the health check failed.
+2. **Start command** = `node server/dist/index.js` — remove `npm run start` override
+3. **Health check path** = `/api/health` (or `/health`)
+4. **Do not set `PORT`** in Railway Variables
+5. **Target Port** in Networking = **8080**
 
-**If deploy logs show `Server running` then `SIGTERM`:** health check failed or npm was PID 1. This repo uses `node server/dist/index.js` (see `railway.toml`) and `/api/health`. After redeploy, verify:
+**If deploy logs show `Server running` then `SIGTERM`:** health check failed or npm was PID 1. After redeploy, verify:
 
 ```bash
 curl -s https://YOUR_RAILWAY_URL/api/health
@@ -64,7 +74,7 @@ curl -s https://YOUR_RAILWAY_URL/api/health
 | `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API                        |
 | `MAIL_TRANSPORT`                         | **`gmail-api` on Railway** (required). `auto` or omit locally (uses SMTP). |
 
-**Railway email:** Outbound SMTP (ports 465/587) is blocked on Hobby/Trial/Free plans — set **`MAIL_TRANSPORT=gmail-api`** in Railway Variables. After deploy, logs must show `[mail-config] { resolved: 'gmail-api', ... }`. If you still see `transport: 'gmail-oauth2'` or `ETIMEDOUT`/`CONN`, the old build is still running — wait for deploy to finish and retry.
+**Railway email:** Outbound SMTP (ports 465/587) is blocked on Hobby/Trial/Free plans — set **`MAIL_TRANSPORT=gmail-api`** in Railway Variables.
 
 One-time setup in [Google Cloud Console](https://console.cloud.google.com/): enable **Gmail API** for your OAuth project and ensure the refresh token includes scope `https://www.googleapis.com/auth/gmail.send` (OAuth Playground: Gmail API v1 → `gmail.send`).
 

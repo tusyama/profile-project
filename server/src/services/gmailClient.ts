@@ -29,27 +29,6 @@ export async function createGmailClient(env: Env): Promise<gmail_v1.Gmail> {
     throw new Error('Failed to obtain Google OAuth2 access token');
   }
 
-  // #region agent log
-  fetch('http://127.0.0.1:7657/ingest/81aa1bfe-47e5-4739-b00a-ab299f5ddc8d', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'ef2fd5' },
-    body: JSON.stringify({
-      sessionId: 'ef2fd5',
-      location: 'gmailClient.ts:oauth',
-      message: 'OAuth access token obtained for Gmail API',
-      data: {
-        hasToken: Boolean(accessToken),
-        tokenLength: accessToken?.length ?? 0,
-        smtpUser: env.SMTP_USER,
-        transport: 'gmail-api',
-      },
-      timestamp: Date.now(),
-      hypothesisId: 'B',
-      runId: 'post-fix',
-    }),
-  }).catch(() => {});
-  // #endregion
-
   return google.gmail({ version: 'v1', auth: oauth2Client });
 }
 
@@ -107,22 +86,6 @@ export async function sendGmailMessage(
   },
 ): Promise<void> {
   const raw = buildGmailRawMessage(options);
-
-  // #region agent log
-  fetch('http://127.0.0.1:7657/ingest/81aa1bfe-47e5-4739-b00a-ab299f5ddc8d', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'ef2fd5' },
-    body: JSON.stringify({
-      sessionId: 'ef2fd5',
-      location: 'gmailClient.ts:send',
-      message: 'Calling Gmail API users.messages.send',
-      data: { from: options.from, to: options.to, transport: 'gmail-api-https' },
-      timestamp: Date.now(),
-      hypothesisId: 'A',
-      runId: 'post-fix',
-    }),
-  }).catch(() => {});
-  // #endregion
 
   await gmail.users.messages.send({
     userId: 'me',

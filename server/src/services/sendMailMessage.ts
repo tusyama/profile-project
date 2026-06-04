@@ -21,16 +21,6 @@ export function resolveMailTransport(): MailTransport {
   return isRailwayRuntime() ? 'gmail-api' : 'smtp';
 }
 
-export function getMailTransportDiagnostics(): Record<string, unknown> {
-  return {
-    resolved: resolveMailTransport(),
-    mailTransportEnv: process.env.MAIL_TRANSPORT ?? null,
-    railwayEnvironment: process.env.RAILWAY_ENVIRONMENT ?? null,
-    railwayProjectId: process.env.RAILWAY_PROJECT_ID ? '(set)' : null,
-    isRailway: isRailwayRuntime(),
-  };
-}
-
 type SendOptions = {
   from: string;
   to: string;

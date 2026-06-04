@@ -35,28 +35,6 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
   let ownerSent = false;
 
   try {
-    // #region agent log
-    fetch('http://127.0.0.1:7657/ingest/81aa1bfe-47e5-4739-b00a-ab299f5ddc8d', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'ef2fd5' },
-      body: JSON.stringify({
-        sessionId: 'ef2fd5',
-        location: 'mail.ts:before-owner-send',
-        message: 'Starting owner notification',
-        data: {
-          from: env.FROM_EMAIL,
-          ownerTo: env.OWNER_EMAIL,
-          transport,
-          railwayEnv: Boolean(process.env.RAILWAY_ENVIRONMENT),
-        },
-        timestamp: Date.now(),
-        hypothesisId: 'E',
-        runId: 'post-fix',
-      }),
-    }).catch(() => {});
-    const sendStart = Date.now();
-    // #endregion
-
     await sendMailMessage(env, {
       from: env.FROM_EMAIL,
       to: env.OWNER_EMAIL,
@@ -66,22 +44,6 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
     });
     ownerSent = true;
 
-    // #region agent log
-    fetch('http://127.0.0.1:7657/ingest/81aa1bfe-47e5-4739-b00a-ab299f5ddc8d', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'ef2fd5' },
-      body: JSON.stringify({
-        sessionId: 'ef2fd5',
-        location: 'mail.ts:owner-sent',
-        message: 'Owner notification sent',
-        data: { elapsedMs: Date.now() - sendStart, transport },
-        timestamp: Date.now(),
-        hypothesisId: 'E',
-        runId: 'post-fix',
-      }),
-    }).catch(() => {});
-    // #endregion
-
     await sendMailMessage(env, {
       from: env.FROM_EMAIL,
       to: data.email,
@@ -90,37 +52,6 @@ export async function sendContactEmails(env: Env, data: ContactInput): Promise<v
       text: `Спасибо! Мы получили ваше сообщение.\n\nВаш комментарий:\n${data.comment}`,
     });
   } catch (error) {
-    // #region agent log
-    const te = error as Error & {
-      code?: string;
-      command?: string;
-      address?: string;
-      port?: number;
-      status?: number;
-    };
-    fetch('http://127.0.0.1:7657/ingest/81aa1bfe-47e5-4739-b00a-ab299f5ddc8d', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'ef2fd5' },
-      body: JSON.stringify({
-        sessionId: 'ef2fd5',
-        location: 'mail.ts:send-failed',
-        message: 'sendMail failed',
-        data: {
-          stage: ownerSent ? 'user_confirmation' : 'owner_notification',
-          transport,
-          code: te.code,
-          command: te.command,
-          address: te.address,
-          port: te.port,
-          status: te.status,
-          errMessage: te.message,
-        },
-        timestamp: Date.now(),
-        hypothesisId: 'A',
-        runId: 'post-fix',
-      }),
-    }).catch(() => {});
-    // #endregion
     console.error('[contact-email]', {
       stage: ownerSent ? 'user_confirmation' : 'owner_notification',
       ownerSent,

@@ -12,6 +12,10 @@ export function createApp(env: Env) {
 
   app.onError(errorHandler);
 
+  // Health checks before middleware — Railway must always get 200 quickly.
+  app.get('/api/health', (c) => c.json({ status: 'ok' }));
+  app.get('/health', (c) => c.json({ status: 'ok' }));
+
   app.use('*', secureHeaders());
   app.use(
     '*',
@@ -22,7 +26,6 @@ export function createApp(env: Env) {
     }),
   );
 
-  app.get('/api/health', (c) => c.json({ status: 'ok' }));
   app.route('/api/contact', createContactRoutes(env));
   app.route('/api/ai', createAiRoutes(env));
 

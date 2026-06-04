@@ -29,6 +29,14 @@ Browser → Vercel (client/dist)     VITE_API_URL → https://api.your-domain.co
 3. Set environment variables (see table below). **Do not set `PORT`** — Railway injects it; the app listens on `process.env.PORT`.
 4. Note the public URL, e.g. `https://developer-landing-api.up.railway.app`.
 
+**If deploy logs show `Server running` then `Stopping Container`:** the new deployment failed its health check and Railway rolled back to the previous version. Check:
+
+1. **Root Directory** = repository root (blank), **not** `server/`
+2. **Start command** = `node server/dist/index.js` (from `railway.toml`) — remove `npm run start` override in Settings → Deploy
+3. **Health check path** = `/api/health` (or `/health`) — remove wrong paths like `/` or `/healthz`
+4. **Do not set `PORT`** in Railway Variables — Railway injects it (usually `8080`)
+5. After deploy, logs should show `[startup]`, `[startup-health] { status: 200, ok: true }`, `[mail-config]`. If you see `[shutdown] received SIGTERM` right after startup, the health check failed.
+
 **If deploy logs show `Server running` then `SIGTERM`:** health check failed or npm was PID 1. This repo uses `node server/dist/index.js` (see `railway.toml`) and `/api/health`. After redeploy, verify:
 
 ```bash

@@ -6,6 +6,7 @@ import { config } from 'dotenv';
 const serverRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const envPath = path.join(serverRoot, '.env');
 
-if (existsSync(envPath)) {
+// Railway injects env vars — never load local .env in production (would override PORT, etc.).
+if (!process.env.RAILWAY_ENVIRONMENT && existsSync(envPath)) {
   config({ path: envPath });
 }

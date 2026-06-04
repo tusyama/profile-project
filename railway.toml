@@ -9,4 +9,6 @@ watchPatterns = ["server/**", "package.json", "package-lock.json"]
 # Run Node directly — npm as PID 1 intercepts SIGTERM and breaks Railway health checks.
 startCommand = "node server/dist/index.js"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 120
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

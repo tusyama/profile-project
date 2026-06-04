@@ -45,15 +45,18 @@ curl -s https://YOUR_RAILWAY_URL/api/health
 4. **Health check path:** `/api/health`
 5. Set environment variables (see [server/.env.example](../server/.env.example)):
 
-| Variable                                 | Example                                                   |
-| ---------------------------------------- | --------------------------------------------------------- |
-| `PORT`                                   | omit on Railway/Render (platform sets it); `3001` locally |
-| `OWNER_EMAIL`                            | your inbox                                                |
-| `SMTP_USER`, `FROM_EMAIL`, `GOOGLE_*`    | Gmail OAuth2 (`@gmail.com` sender)                        |
-| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                                |
-| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)              |
-| `SITE_URL`                               | same as `CLIENT_URL` or custom domain                     |
-| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API       |
+| Variable                                 | Example                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `PORT`                                   | omit on Railway/Render (platform sets it); `3001` locally                                   |
+| `OWNER_EMAIL`                            | your inbox                                                                                  |
+| `SMTP_USER`, `FROM_EMAIL`, `GOOGLE_*`    | Gmail OAuth2 (`@gmail.com` sender)                                                          |
+| `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | OpenRouter                                                                                  |
+| `CLIENT_URL`                             | `https://your-app.vercel.app` (after step 2)                                                |
+| `SITE_URL`                               | same as `CLIENT_URL` or custom domain                                                       |
+| `ALLOW_VERCEL_PREVIEWS`                  | `true` if you test PR preview URLs against this API                                         |
+| `MAIL_TRANSPORT`                         | `auto` (default): Gmail API on Railway, SMTP locally. Set `gmail-api` or `smtp` to override |
+
+**Railway email:** Outbound SMTP (ports 465/587) is blocked on Hobby/Trial/Free plans. With `MAIL_TRANSPORT=auto`, the server uses the **Gmail HTTPS API** when `RAILWAY_ENVIRONMENT` is set. One-time setup in [Google Cloud Console](https://console.cloud.google.com/): enable **Gmail API** for your OAuth project and ensure the refresh token includes scope `https://www.googleapis.com/auth/gmail.send` (OAuth Playground: Gmail API v1 → `gmail.send`).
 
 6. Note the public URL, e.g. `https://developer-landing-api.onrender.com`.
 
